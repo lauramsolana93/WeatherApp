@@ -29,12 +29,11 @@ class SplashActivity : ComponentActivity() {
             LocationViewModel::class.java
         )
 
+        //TODO: GET LOCATION
         viewModel.initLocation("41.54329,2.10942")
 
         viewModel.getLocation().observe(this, Observer {
-            it.let {
-                startActivity(Intent(this, MainActivity::class.java))
-            }
+            startActivity(Intent(this, MainActivity::class.java))
         })
 
         viewModel.getError().observe(this, Observer {

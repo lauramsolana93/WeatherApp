@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, WeatherViewModelFactory(repository = repository, factory)).get(
             WeatherViewModel::class.java)
         viewModel.getCurrentWeatherByLocationKey()
+
     }
 
 }
