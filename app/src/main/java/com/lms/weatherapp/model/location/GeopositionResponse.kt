@@ -1,5 +1,6 @@
 package com.lms.weatherapp.model.location
 
+import com.google.gson.annotations.SerializedName
 import com.lms.weatherapp.model.common.MetricImperialValues
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -7,68 +8,68 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class GeopositionResponse(
-    @field:Json(name = "Version") val version: Int,
-    @field:Json(name = "Key") val key: String,
-    @field:Json(name = "Type") val type: String,
-    @field:Json(name = "Rank") val rank: Int,
-    @field:Json(name = "LocalizedName") val localizedName: String,
-    @field:Json(name = "EnglishName") val englishName: String,
-    @field:Json(name = "PrimaryPostalCode") val primaryPostalCode: String,
-    @field:Json(name = "Region") val region: Region,
-    @field:Json(name = "Country") val country: Country,
-    @field:Json(name = "AdministrativeArea") val adminstrativeArea: AdministrativeArea,
-    @field:Json(name = "TimeZone") val timeZone: TimeZone,
-    @field:Json(name = "GeoPosition") val geoPosition: GeoPosition,
-    @field:Json(name = "IsAlias") val isAlias: Boolean,
-    @field:Json(name = "SupplementalAdminAreas") val supplementalAdminAreas: List<AdminArea>,
-    @field:Json(name = "DataSets") val dataSets: List<String>,
+    @SerializedName("Version") val version: Int,
+    @SerializedName("Key") val key: String,
+    @SerializedName("Type") val type: String,
+    @SerializedName("Rank") val rank: Int,
+    @SerializedName("LocalizedName") val localizedName: String,
+    @SerializedName("EnglishName") val englishName: String,
+    @SerializedName("PrimaryPostalCode") val primaryPostalCode: String,
+    @SerializedName("Region") val region: Region,
+    @SerializedName("Country") val country: Country,
+    @SerializedName("AdministrativeArea") val adminstrativeArea: AdministrativeArea,
+    @SerializedName("TimeZone") val timeZone: TimeZone,
+    @SerializedName("GeoPosition") val geoPosition: GeoPosition,
+    @SerializedName("IsAlias") val isAlias: Boolean,
+    @SerializedName("SupplementalAdminAreas") val supplementalAdminAreas: List<AdminArea>,
+    @SerializedName("DataSets") val dataSets: List<String>,
 )
 
 @JsonClass(generateAdapter = true)
 data class Region(
-    @field:Json(name = "ID") val id : String,
-    @field:Json(name = "LocalizedName") val localizedName : String,
-    @field:Json(name = "EnglishName") val englishName : String,
+    @SerializedName("ID") val id : String,
+    @SerializedName("LocalizedName") val localizedName : String,
+    @SerializedName("EnglishName") val englishName : String,
 )
 
 @JsonClass(generateAdapter = true)
 data class Country(
-    @field:Json(name = "ID") val id : String,
-    @field:Json(name = "LocalizedName") val localizedName : String,
-    @field:Json(name = "EnglishName") val englishName : String,
+    @SerializedName("ID") val id : String,
+    @SerializedName("LocalizedName") val localizedName : String,
+    @SerializedName("EnglishName") val englishName : String,
 )
 
 @JsonClass(generateAdapter = true)
 data class AdministrativeArea(
-    @field:Json(name = "ID") val id : String,
-    @field:Json(name = "LocalizedName") val localizedName : String,
-    @field:Json(name = "EnglishName") val englishName : String,
-    @field:Json(name = "Level") val level: Int,
-    @field:Json(name = "LocalizedType") val localizedType: String,
-    @field:Json(name = "EnglishType") val englishType: String,
-    @field:Json(name = "CountryId") val countryId: String,
+    @SerializedName("ID") val id : String,
+    @SerializedName("LocalizedName") val localizedName : String,
+    @SerializedName("EnglishName") val englishName : String,
+    @SerializedName("Level") val level: Int,
+    @SerializedName("LocalizedType") val localizedType: String,
+    @SerializedName("EnglishType") val englishType: String,
+    @SerializedName("CountryId") val countryId: String,
 )
 
 @JsonClass(generateAdapter = true)
 data class TimeZone(
-    @field:Json(name = "Code") val code : String,
-    @field:Json(name = "Name") val name: String,
-    @field:Json(name = "GmtOffset") val gtmOffset: Int,
-    @field:Json(name = "IsDaylightSaving") val isDaylightSaving: Boolean,
-    @field:Json(name = "NextOffsetChange") val nextOffsetChange: String
+    @SerializedName("Code") val code : String,
+    @SerializedName("Name") val name: String,
+    @SerializedName("GmtOffset") val gtmOffset: Int,
+    @SerializedName("IsDaylightSaving") val isDaylightSaving: Boolean,
+    @SerializedName("NextOffsetChange") val nextOffsetChange: String
 )
 
 @JsonClass(generateAdapter = true)
 data class GeoPosition(
-    @field:Json(name = "Latitude") val latitude: Long,
-    @field:Json(name = "Longitude") val longitude: Long,
-    @field:Json(name = "Elevation") val elevation: MetricImperialValues
+    @SerializedName("Latitude") val latitude: Double,
+    @SerializedName("Longitude") val longitude: Double,
+    @SerializedName("Elevation") val elevation: MetricImperialValues
 )
 
 @JsonClass(generateAdapter = true)
 data class AdminArea(
-    @field:Json(name = "Level") val level: Int,
-    @field:Json(name = "LocalizedName") val localizedName : String,
-    @field:Json(name = "EnglishName") val englishName: String
+    @SerializedName("Level") val level: Int,
+    @SerializedName("LocalizedName") val localizedName : String,
+    @SerializedName("EnglishName") val englishName: String
 )
 

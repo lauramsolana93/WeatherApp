@@ -7,8 +7,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.lms.weatherapp.WeatherApplication
-import com.lms.weatherapp.weather.viewmodel.LocationViewModel
-import com.lms.weatherapp.weather.viewmodel.LocationViewModelFactory
+import com.lms.weatherapp.location.viewmodel.LocationViewModel
+import com.lms.weatherapp.location.viewmodel.LocationViewModelFactory
 import com.lms.wheatherapp.R
 
 class SplashActivity : ComponentActivity() {
@@ -23,8 +23,8 @@ class SplashActivity : ComponentActivity() {
     }
 
     private fun initRepos() {
-        val repository = (application as WeatherApplication).repository
-        val factory = (application as WeatherApplication).weatherFactory
+        val repository = (application as WeatherApplication).locationRepository
+        val factory = (application as WeatherApplication).locationFactory
         viewModel = ViewModelProvider(this, LocationViewModelFactory(repository, factory)).get(
             LocationViewModel::class.java
         )

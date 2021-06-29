@@ -1,4 +1,4 @@
-package com.lms.weatherapp.weather.model
+package com.lms.weatherapp.location.model
 
 data class Location(
     val key: String

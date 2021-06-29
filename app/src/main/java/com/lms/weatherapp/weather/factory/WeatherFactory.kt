@@ -1,12 +1,11 @@
 package com.lms.weatherapp.weather.factory
 
-import com.lms.weatherapp.weather.model.Location
+import com.lms.weatherapp.location.model.Location
 
 
 interface WeatherFactory {
 
-    fun buildWeather(callback: Callback, location: String)
-    fun getWeatherByLocation(callback: Callback, location: Location)
+    fun getWeatherByLocation(callback: Callback)
 
     interface Callback {
         fun onSuccess(any:Any)

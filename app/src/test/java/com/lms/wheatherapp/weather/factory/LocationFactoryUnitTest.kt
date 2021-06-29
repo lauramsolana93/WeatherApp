@@ -1,51 +1,49 @@
 package com.lms.wheatherapp.weather.factory
 
-import com.lms.weatherapp.common.repository.WeatherRepository
-import com.lms.weatherapp.model.location.GeopositionResponse
+import com.lms.weatherapp.common.repository.location.LocationRepository
+import com.lms.weatherapp.location.factory.LocationFactory
+import com.lms.weatherapp.location.factory.LocationFactoryImpl
 import com.lms.weatherapp.network.RepositoryCallback
 import com.lms.weatherapp.weather.factory.WeatherFactory
 import com.lms.weatherapp.weather.factory.WeatherFactoryImpl
-import com.lms.weatherapp.weather.model.Location
-import com.lms.wheatherapp.utils.getGeoPositionMock
+import com.lms.weatherapp.location.model.Location
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-class WeatherFactoryUnitTest {
+class LocationFactoryUnitTest {
 
 
     private val location = "41.54329,2.10942"
-    private val geopositionMock = getGeoPositionMock()
-
-    private lateinit var repository: WeatherRepository
-    private lateinit var factory: WeatherFactory
+    private lateinit var repository: LocationRepository
+    private lateinit var factory: LocationFactory
 
     @Before
     fun setup(){
         repository = mock()
-        factory = WeatherFactoryImpl(repository)
+        factory = LocationFactoryImpl(repository)
     }
 
     @Test
     fun buildWeather_shouldGetGeopositionFromRepo(){
-        factory.buildWeather(mock(), location)
+        factory.buildLocation(mock(), location)
         verify(repository).getLocationKey(any(), any())
     }
 
     @Test
     fun buildWeather_shouldCallOnSuccess(){
-        val callback = mock<WeatherFactory.Callback>()
+        val callback = mock<LocationFactory.Callback>()
         setUpRepositoryWithGeolocation(repository)
-        factory.buildWeather(callback, location)
+        factory.buildLocation(callback, location)
         verify(callback).onSuccess(Location("301307"))
     }
 
     @Test
     fun buildWeather_shouldCallOnError(){
-        val callback = mock<WeatherFactory.Callback>()
+        val callback = mock<LocationFactory.Callback>()
         setUpRepositoryWithError(repository = repository)
-        factory.buildWeather(callback, location)
+        factory.buildLocation(callback, location)
         verify(callback).onError("Error")
     }
 
@@ -54,7 +52,7 @@ class WeatherFactoryUnitTest {
         setUpRepositoryWithGeolocation(repository)
         val locat = Location("301307")
 
-        factory.buildWeather(object : WeatherFactory.Callback {
+        factory.buildLocation(object : LocationFactory.Callback {
             override fun onSuccess(any: Any) {
                 val loc = any as Location
                 Assert.assertEquals(locat.key, loc.key)
@@ -73,7 +71,7 @@ class WeatherFactoryUnitTest {
     @Test
     fun buildWeather_shouldBuildWeatherLoading(){
         setUpRepositoryWithLoading(repository)
-        factory.buildWeather(object : WeatherFactory.Callback {
+        factory.buildLocation(object : LocationFactory.Callback {
             override fun onSuccess(any: Any) {
                 Assert.assertNotNull(any)
             }
@@ -90,21 +88,21 @@ class WeatherFactoryUnitTest {
 
 
 
-    private fun setUpRepositoryWithGeolocation(repository: WeatherRepository){
+    private fun setUpRepositoryWithGeolocation(repository: LocationRepository){
         doAnswer {
             val callback: RepositoryCallback<Location?, String> = it.getArgument(0)
             callback.onSuccess(Location("301307"))
         }.whenever(repository).getLocationKey(any(), any())
     }
 
-    private fun setUpRepositoryWithError(repository: WeatherRepository){
+    private fun setUpRepositoryWithError(repository: LocationRepository){
         doAnswer {
             val callback: RepositoryCallback<Location?, String> = it.getArgument(0)
             callback.onError("Error")
         }.whenever(repository).getLocationKey(any(), any())
     }
 
-    private fun setUpRepositoryWithLoading(repository: WeatherRepository){
+    private fun setUpRepositoryWithLoading(repository: LocationRepository){
         doAnswer {
             val callback: RepositoryCallback<Location?, String> = it.getArgument(0)
             callback.onLoading()

@@ -3,6 +3,7 @@ package com.lms.weatherapp.network
 import com.google.gson.GsonBuilder
 import com.lms.weatherapp.model.location.GeopositionResponse
 import com.lms.weatherapp.model.weather.CurrentConditionsResponse
+import com.lms.wheatherapp.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -24,9 +25,9 @@ interface WeatherApiService {
 
     @GET("currentconditions/v1/{locationKey}")
     fun getCurrentConditionsByLocationKey(
-        @Query("language") language: String = "es-ES",
-        @Path("locationKey") locationKey : String
-    ): List<CurrentConditionsResponse>
+        @Path("locationKey") locationKey : String,
+        @Query("language") language: String = "es-ES"
+    ): Call<List<CurrentConditionsResponse>>
 
     companion object Factory {
         fun create() : WeatherApiService {
@@ -41,7 +42,7 @@ interface WeatherApiService {
                         val original = chain.request()
                         val originalHttpUrl = original.url
                         val url = originalHttpUrl.newBuilder()
-                            .addQueryParameter("key", "value")
+                            .addQueryParameter("apikey", BuildConfig.PUBLIC_KEY)
                             .build()
 
                         // Request customization: add request headers

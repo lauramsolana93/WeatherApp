@@ -1,15 +1,16 @@
-package com.lms.weatherapp.weather.viewmodel
+package com.lms.weatherapp.location.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.lms.weatherapp.common.repository.WeatherRepository
+import com.lms.weatherapp.common.repository.location.LocationRepository
+import com.lms.weatherapp.location.factory.LocationFactory
 import com.lms.weatherapp.weather.factory.WeatherFactory
-import com.lms.weatherapp.weather.model.Location
+import com.lms.weatherapp.location.model.Location
 
 class LocationViewModel(
-    private val repository: WeatherRepository,
-    private val factory: WeatherFactory
+    private val repository: LocationRepository,
+    private val factory: LocationFactory
 ): ViewModel() {
 
     private val loading = MutableLiveData<Boolean>()
@@ -21,7 +22,7 @@ class LocationViewModel(
     fun getLocation(): LiveData<Location> = location
 
     fun initLocation(loc: String){
-        factory.buildWeather(object : WeatherFactory.Callback {
+        factory.buildLocation(object : LocationFactory.Callback {
             override fun onSuccess(any: Any) {
                location.value = any as Location
             }
@@ -36,20 +37,6 @@ class LocationViewModel(
         }, loc)
     }
 
-    fun getWetherByLocation(){
-        factory.getWeatherByLocation(object : WeatherFactory.Callback {
-            override fun onSuccess(any: Any) {
 
-            }
-
-            override fun onError(e: String) {
-
-            }
-
-            override fun onLoading(isLoading: Boolean) {
-
-            }
-        }, getLocation().value ?: Location(""))
-    }
 
 }

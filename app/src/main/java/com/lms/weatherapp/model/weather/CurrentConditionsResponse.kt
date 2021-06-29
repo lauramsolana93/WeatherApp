@@ -1,90 +1,91 @@
 package com.lms.weatherapp.model.weather
 
+import com.google.gson.annotations.SerializedName
 import com.lms.weatherapp.model.common.MetricImperialValues
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class CurrentConditionsResponse(
-    @field:Json(name = "LocalObservationDateTime") val localObservationSateTime: String,
-    @field:Json(name = "EpochTime") val epochTime: Long,
-    @field:Json(name = "WeatherText") val weatherText: String,
-    @field:Json(name = "WeatherIcon") val weatherIcon: Int,
-    @field:Json(name = "HasPrecipitation") val hasPrecipitation: Boolean,
-    @field:Json(name = "IsDayTime") val isDayTime: Boolean,
-    @field:Json(name = "Temperature") val temperature: MetricImperialValues,
-    @field:Json(name = "RealFeelTemperature") val realFeelTemperature: MetricImperialValues,
-    @field:Json(name = "RealFeelTemperatureShade") val realFeelTemperatureShade: MetricImperialValues,
-    @field:Json(name = "RelativeHumidity") val relativeHumidity: Int,
-    @field:Json(name = "IndoorRelativeHumidity") val indoorRelativeHumidity: Int,
-    @field:Json(name = "DewPoint") val dewPoint: MetricImperialValues,
-    @field:Json(name = "Wind") val wind: Wind,
-    @field:Json(name = "WindGust") val windGust: WindGust,
-    @field:Json(name = "UVIndex") val uVIndex: Int,
-    @field:Json(name = "UVIndexText") val uVIndexText: String,
-    @field:Json(name = "Visibility") val visibility: MetricImperialValues,
-    @field:Json(name = "ObstructionsToVisibility") val obstructionsToVisibility: String,
-    @field:Json(name = "CloudCover") val cloudCover: Int,
-    @field:Json(name = "Ceiling") val ceiling: MetricImperialValues,
-    @field:Json(name = "Pressuere") val pressure: MetricImperialValues,
-    @field:Json(name = "PressuereTendency") val pressureTendency: PressureTendency,
-    @field:Json(name = "Past24HourTemperatureDeparture") val past24HourTemperatureDeparture: MetricImperialValues,
-    @field:Json(name = "ApparentTemperature") val apparentTemperature: MetricImperialValues,
-    @field:Json(name = "WindChillTemperature") val windChillTemperature: MetricImperialValues,
-    @field:Json(name = "PressuereTendency") val wetBulbTemperature: MetricImperialValues,
-    @field:Json(name = "Precip1hr") val precip1hr: MetricImperialValues,
-    @field:Json(name = "PrecipitationSummary") val precipitationSummary: PrecipitationSummary,
-    @field:Json(name = "TemperatureSummary") val temperatureSummary: TemperatureSummary,
-    @field:Json(name = "MobileLink") val mobileLink: String,
-    @field:Json(name = "Link") val link: String,
+    @SerializedName("LocalObservationDateTime") val localObservationSateTime: String,
+    @SerializedName("EpochTime") val epochTime: Long,
+    @SerializedName("WeatherText") val weatherText: String,
+    @SerializedName("WeatherIcon") val weatherIcon: Int,
+    @SerializedName("HasPrecipitation") val hasPrecipitation: Boolean,
+    @SerializedName("IsDayTime") val isDayTime: Boolean,
+    @SerializedName("Temperature") val temperature: MetricImperialValues,
+    @SerializedName("RealFeelTemperature") val realFeelTemperature: MetricImperialValues,
+    @SerializedName("RealFeelTemperatureShade") val realFeelTemperatureShade: MetricImperialValues,
+    @SerializedName("RelativeHumidity") val relativeHumidity: Int,
+    @SerializedName("IndoorRelativeHumidity") val indoorRelativeHumidity: Int,
+    @SerializedName("DewPoint") val dewPoint: MetricImperialValues,
+    @SerializedName("Wind") val wind: Wind,
+    @SerializedName("WindGust") val windGust: WindGust,
+    @SerializedName("UVIndex") val uVIndex: Int,
+    @SerializedName("UVIndexText") val uVIndexText: String,
+    @SerializedName("Visibility") val visibility: MetricImperialValues,
+    @SerializedName("ObstructionsToVisibility") val obstructionsToVisibility: String,
+    @SerializedName("CloudCover") val cloudCover: Int,
+    @SerializedName("Ceiling") val ceiling: MetricImperialValues,
+    @SerializedName("Pressuere") val pressure: MetricImperialValues,
+    @SerializedName("PressuereTendency") val pressureTendency: PressureTendency,
+    @SerializedName("Past24HourTemperatureDeparture") val past24HourTemperatureDeparture: MetricImperialValues,
+    @SerializedName("ApparentTemperature") val apparentTemperature: MetricImperialValues,
+    @SerializedName("WindChillTemperature") val windChillTemperature: MetricImperialValues,
+    @SerializedName("PressuereTendency") val wetBulbTemperature: MetricImperialValues,
+    @SerializedName("Precip1hr") val precip1hr: MetricImperialValues,
+    @SerializedName("PrecipitationSummary") val precipitationSummary: PrecipitationSummary,
+    @SerializedName("TemperatureSummary") val temperatureSummary: TemperatureSummary,
+    @SerializedName("MobileLink") val mobileLink: String,
+    @SerializedName("Link") val link: String,
     )
 
 
 @JsonClass(generateAdapter = true)
 data class Wind(
-    @field:Json(name = "Direction") val direction: Direction,
-    @field:Json(name = "Speed") val speed: MetricImperialValues,
+    @SerializedName("Direction") val direction: Direction,
+    @SerializedName("Speed") val speed: MetricImperialValues,
 )
 
 @JsonClass(generateAdapter = true)
 data class Direction(
-    @field:Json(name = "Degrees") val degrees: Int,
-    @field:Json(name = "Localized") val localized: String,
-    @field:Json(name = "English") val english: String
+    @SerializedName("Degrees") val degrees: Int,
+    @SerializedName("Localized") val localized: String,
+    @SerializedName("English") val english: String
 )
 
 @JsonClass(generateAdapter = true)
 data class WindGust(
-    @field:Json(name = "Speed") val speed: MetricImperialValues
+    @SerializedName("Speed") val speed: MetricImperialValues
 )
 
 @JsonClass(generateAdapter = true)
 data class PressureTendency(
-    @field:Json(name = "LocalizedText") val localizedText: String,
-    @field:Json(name = "Code") val code: String
+    @SerializedName("LocalizedText") val localizedText: String,
+    @SerializedName("Code") val code: String
 )
 
 @JsonClass(generateAdapter = true)
 data class PrecipitationSummary(
-    @field:Json(name = "Precipitation") val precipitation : MetricImperialValues,
-    @field:Json(name = "PastHour") val pastHour: MetricImperialValues,
-    @field:Json(name = "Past3Hours") val past3Hours: MetricImperialValues,
-    @field:Json(name = "Past6Hours") val past6Hours: MetricImperialValues,
-    @field:Json(name = "Past9Hours") val past9Hours: MetricImperialValues,
-    @field:Json(name = "Past12Hours") val past12Hours: MetricImperialValues,
-    @field:Json(name = "Past18Hours") val past18Hours: MetricImperialValues,
-    @field:Json(name = "Past24Hours") val past24Hours: MetricImperialValues,
+    @SerializedName("Precipitation") val precipitation : MetricImperialValues,
+    @SerializedName("PastHour") val pastHour: MetricImperialValues,
+    @SerializedName("Past3Hours") val past3Hours: MetricImperialValues,
+    @SerializedName("Past6Hours") val past6Hours: MetricImperialValues,
+    @SerializedName("Past9Hours") val past9Hours: MetricImperialValues,
+    @SerializedName("Past12Hours") val past12Hours: MetricImperialValues,
+    @SerializedName("Past18Hours") val past18Hours: MetricImperialValues,
+    @SerializedName("Past24Hours") val past24Hours: MetricImperialValues,
 )
 
 @JsonClass(generateAdapter = true)
 data class TemperatureSummary(
-    @field:Json(name = "Past6HourRange") val past6HourRange : PastHourRange,
-    @field:Json(name = "Past12HourRange") val past12HourRange : PastHourRange,
-    @field:Json(name = "Past24HourRange") val past24HourRange : PastHourRange,
+    @SerializedName("Past6HourRange") val past6HourRange : PastHourRange,
+    @SerializedName("Past12HourRange") val past12HourRange : PastHourRange,
+    @SerializedName("Past24HourRange") val past24HourRange : PastHourRange,
 
-)
+    )
 @JsonClass(generateAdapter = true)
 data class PastHourRange(
-    @field:Json(name = "Minimum") val minimum : MetricImperialValues,
-    @field:Json(name = "Maximum") val Maximum : MetricImperialValues,
+    @SerializedName("Minimum") val minimum : MetricImperialValues,
+    @SerializedName("Maximum") val Maximum : MetricImperialValues,
 )

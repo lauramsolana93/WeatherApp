@@ -1,18 +1,18 @@
 package com.lms.weatherapp.weather.factory
 
-import com.lms.weatherapp.common.repository.WeatherRepository
+import com.lms.weatherapp.common.repository.weather.WeatherRepository
+import com.lms.weatherapp.location.model.Location
 import com.lms.weatherapp.network.RepositoryCallback
-import com.lms.weatherapp.weather.model.Location
+import com.lms.weatherapp.weather.model.CurrentWeather
 
 class WeatherFactoryImpl(
     private val repository: WeatherRepository
 ) : WeatherFactory {
-
-    override fun buildWeather(callback: WeatherFactory.Callback, location: String) {
-        repository.getLocationKey(
-            object : RepositoryCallback<Location?, String> {
-                override fun onSuccess(t: Location?) {
-                    callback.onSuccess(t as Location)
+    override fun getWeatherByLocation(callback: WeatherFactory.Callback) {
+        repository.getWeatherByLocationKey(
+            object : RepositoryCallback<List<CurrentWeather>, String> {
+                override fun onSuccess(t: List<CurrentWeather>) {
+                    callback.onSuccess(t)
                 }
 
                 override fun onError(e: String) {
@@ -23,11 +23,7 @@ class WeatherFactoryImpl(
                     callback.onLoading(true)
                 }
             }
-        , location)
-    }
-
-    override fun getWeatherByLocation(callback: WeatherFactory.Callback, location: Location) {
-        //
+        ,)
     }
 
 
