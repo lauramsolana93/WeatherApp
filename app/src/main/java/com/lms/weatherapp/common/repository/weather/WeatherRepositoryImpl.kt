@@ -50,7 +50,7 @@ class WeatherRepositoryImpl(
         getCurrentWeather?.enqueue(wrapCallback)
     }
 
-    private fun getCurrentLocationKey(): String {
+    override fun getCurrentLocationKey(): String {
         return "41.54329,2.10942"
         //return sharedPreferences.getString(CURRENT_KEY, "") ?: ""
     }

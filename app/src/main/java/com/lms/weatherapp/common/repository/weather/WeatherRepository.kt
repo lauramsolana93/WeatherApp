@@ -6,5 +6,6 @@ import com.lms.weatherapp.weather.model.CurrentWeather
 
 interface WeatherRepository {
     fun getWeatherByLocationKey(callback: RepositoryCallback<List<CurrentWeather>, String>)
+    fun getLocationKey(): String
 }
 

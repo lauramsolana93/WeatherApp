@@ -1,11 +1,9 @@
-package com.lms.wheatherapp.weather.factory
+package com.lms.wheatherapp.location.factory
 
 import com.lms.weatherapp.common.repository.location.LocationRepository
 import com.lms.weatherapp.location.factory.LocationFactory
 import com.lms.weatherapp.location.factory.LocationFactoryImpl
 import com.lms.weatherapp.network.RepositoryCallback
-import com.lms.weatherapp.weather.factory.WeatherFactory
-import com.lms.weatherapp.weather.factory.WeatherFactoryImpl
 import com.lms.weatherapp.location.model.Location
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Assert

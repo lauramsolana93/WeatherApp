@@ -1,4 +1,4 @@
-package com.lms.wheatherapp.weather.viewmodel
+package com.lms.wheatherapp.location.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.lms.weatherapp.common.repository.location.LocationRepository
