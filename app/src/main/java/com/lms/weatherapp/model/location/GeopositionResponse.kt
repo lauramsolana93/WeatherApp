@@ -6,7 +6,6 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 
-@JsonClass(generateAdapter = true)
 data class GeopositionResponse(
     @SerializedName("Version") val version: Int,
     @SerializedName("Key") val key: String,
@@ -25,21 +24,21 @@ data class GeopositionResponse(
     @SerializedName("DataSets") val dataSets: List<String>,
 )
 
-@JsonClass(generateAdapter = true)
+
 data class Region(
     @SerializedName("ID") val id : String,
     @SerializedName("LocalizedName") val localizedName : String,
     @SerializedName("EnglishName") val englishName : String,
 )
 
-@JsonClass(generateAdapter = true)
+
 data class Country(
     @SerializedName("ID") val id : String,
     @SerializedName("LocalizedName") val localizedName : String,
     @SerializedName("EnglishName") val englishName : String,
 )
 
-@JsonClass(generateAdapter = true)
+
 data class AdministrativeArea(
     @SerializedName("ID") val id : String,
     @SerializedName("LocalizedName") val localizedName : String,
@@ -50,7 +49,7 @@ data class AdministrativeArea(
     @SerializedName("CountryId") val countryId: String,
 )
 
-@JsonClass(generateAdapter = true)
+
 data class TimeZone(
     @SerializedName("Code") val code : String,
     @SerializedName("Name") val name: String,
@@ -59,14 +58,13 @@ data class TimeZone(
     @SerializedName("NextOffsetChange") val nextOffsetChange: String
 )
 
-@JsonClass(generateAdapter = true)
+
 data class GeoPosition(
     @SerializedName("Latitude") val latitude: Double,
     @SerializedName("Longitude") val longitude: Double,
     @SerializedName("Elevation") val elevation: MetricImperialValues
 )
 
-@JsonClass(generateAdapter = true)
 data class AdminArea(
     @SerializedName("Level") val level: Int,
     @SerializedName("LocalizedName") val localizedName : String,

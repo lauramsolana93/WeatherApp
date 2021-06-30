@@ -2,10 +2,8 @@ package com.lms.weatherapp.model.weather
 
 import com.google.gson.annotations.SerializedName
 import com.lms.weatherapp.model.common.MetricImperialValues
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = true)
+
 data class CurrentConditionsResponse(
     @SerializedName("LocalObservationDateTime") val localObservationSateTime: String,
     @SerializedName("EpochTime") val epochTime: Long,
@@ -14,7 +12,7 @@ data class CurrentConditionsResponse(
     @SerializedName("HasPrecipitation") val hasPrecipitation: Boolean,
     @SerializedName("IsDayTime") val isDayTime: Boolean,
     @SerializedName("Temperature") val temperature: MetricImperialValues,
-    @SerializedName("RealFeelTemperature") val realFeelTemperature: MetricImperialValues,
+    /*@SerializedName("RealFeelTemperature") val realFeelTemperature: MetricImperialValues,
     @SerializedName("RealFeelTemperatureShade") val realFeelTemperatureShade: MetricImperialValues,
     @SerializedName("RelativeHumidity") val relativeHumidity: Int,
     @SerializedName("IndoorRelativeHumidity") val indoorRelativeHumidity: Int,
@@ -35,37 +33,37 @@ data class CurrentConditionsResponse(
     @SerializedName("PressuereTendency") val wetBulbTemperature: MetricImperialValues,
     @SerializedName("Precip1hr") val precip1hr: MetricImperialValues,
     @SerializedName("PrecipitationSummary") val precipitationSummary: PrecipitationSummary,
-    @SerializedName("TemperatureSummary") val temperatureSummary: TemperatureSummary,
+    @SerializedName("TemperatureSummary") val temperatureSummary: TemperatureSummary,*/
     @SerializedName("MobileLink") val mobileLink: String,
     @SerializedName("Link") val link: String,
     )
 
 
-@JsonClass(generateAdapter = true)
+
 data class Wind(
     @SerializedName("Direction") val direction: Direction,
     @SerializedName("Speed") val speed: MetricImperialValues,
 )
 
-@JsonClass(generateAdapter = true)
+
 data class Direction(
     @SerializedName("Degrees") val degrees: Int,
     @SerializedName("Localized") val localized: String,
     @SerializedName("English") val english: String
 )
 
-@JsonClass(generateAdapter = true)
+
 data class WindGust(
     @SerializedName("Speed") val speed: MetricImperialValues
 )
 
-@JsonClass(generateAdapter = true)
+
 data class PressureTendency(
     @SerializedName("LocalizedText") val localizedText: String,
     @SerializedName("Code") val code: String
 )
 
-@JsonClass(generateAdapter = true)
+
 data class PrecipitationSummary(
     @SerializedName("Precipitation") val precipitation : MetricImperialValues,
     @SerializedName("PastHour") val pastHour: MetricImperialValues,
@@ -77,14 +75,14 @@ data class PrecipitationSummary(
     @SerializedName("Past24Hours") val past24Hours: MetricImperialValues,
 )
 
-@JsonClass(generateAdapter = true)
+
 data class TemperatureSummary(
     @SerializedName("Past6HourRange") val past6HourRange : PastHourRange,
     @SerializedName("Past12HourRange") val past12HourRange : PastHourRange,
     @SerializedName("Past24HourRange") val past24HourRange : PastHourRange,
 
     )
-@JsonClass(generateAdapter = true)
+
 data class PastHourRange(
     @SerializedName("Minimum") val minimum : MetricImperialValues,
     @SerializedName("Maximum") val Maximum : MetricImperialValues,

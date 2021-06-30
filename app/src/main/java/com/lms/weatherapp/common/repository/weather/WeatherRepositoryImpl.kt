@@ -51,7 +51,8 @@ class WeatherRepositoryImpl(
     }
 
     private fun getCurrentLocationKey(): String {
-        return sharedPreferences.getString(CURRENT_KEY, "") ?: ""
+        return "41.54329,2.10942"
+        //return sharedPreferences.getString(CURRENT_KEY, "") ?: ""
     }
 
 }

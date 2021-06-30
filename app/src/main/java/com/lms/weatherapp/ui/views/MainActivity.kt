@@ -2,6 +2,7 @@ package com.lms.weatherapp.ui.views
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.lms.weatherapp.WeatherApplication
 import com.lms.weatherapp.location.viewmodel.LocationViewModel
@@ -27,6 +28,18 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, WeatherViewModelFactory(repository = repository, factory)).get(
             WeatherViewModel::class.java)
         viewModel.getCurrentWeatherByLocationKey()
+
+        viewModel.getCurrentWeather().observe(this, Observer {
+
+        })
+
+        viewModel.getError().observe(this, Observer {
+
+        })
+
+        viewModel.getLoading().observe(this, Observer {
+
+        })
 
     }
 

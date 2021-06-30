@@ -26,7 +26,7 @@ interface WeatherApiService {
     @GET("currentconditions/v1/{locationKey}")
     fun getCurrentConditionsByLocationKey(
         @Path("locationKey") locationKey : String,
-        @Query("language") language: String = "es-ES"
+        @Query("language") language: String = "es-ES",
     ): Call<List<CurrentConditionsResponse>>
 
     companion object Factory {

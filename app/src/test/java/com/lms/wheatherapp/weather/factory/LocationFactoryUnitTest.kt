@@ -48,6 +48,14 @@ class LocationFactoryUnitTest {
     }
 
     @Test
+    fun buildWeather_shouldCallOnLoading(){
+        val callback = mock<LocationFactory.Callback>()
+        setUpRepositoryWithLoading(repository)
+        factory.buildLocation(callback, location)
+        verify(callback).onLoading(true)
+    }
+
+    @Test
     fun buildWeather_shouldBuildWeatherWithLocation(){
         setUpRepositoryWithGeolocation(repository)
         val locat = Location("301307")
