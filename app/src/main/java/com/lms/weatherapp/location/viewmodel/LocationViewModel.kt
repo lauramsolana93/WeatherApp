@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.lms.weatherapp.common.repository.location.LocationRepository
 import com.lms.weatherapp.location.factory.LocationFactory
-import com.lms.weatherapp.weather.factory.WeatherFactory
 import com.lms.weatherapp.location.model.Location
 
 class LocationViewModel(
@@ -36,6 +35,12 @@ class LocationViewModel(
             }
         }, loc)
     }
+
+
+
+
+
+
 
 
 

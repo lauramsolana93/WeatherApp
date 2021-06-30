@@ -30,7 +30,7 @@ class LocationRepositoryImpl(
                     if (response != null && response.isSuccessful) {
                         val loc = response.body()
                         if (loc != null) {
-                            saveLocationInSharedPreferences(loc.key)
+                            saveLocationKey(loc.key)
                             callback.onSuccess(Location(loc.key))
                             return
                         }
@@ -45,8 +45,8 @@ class LocationRepositoryImpl(
         getLocationCall?.enqueue(wrapCallback)
     }
 
-    private fun saveLocationInSharedPreferences(locationKey: String){
-        val currentLocationKey = getCurrentLocationKey()
+    override fun saveLocationKey(locationKey: String){
+        val currentLocationKey = getLocationKey()
         if(locationKey != currentLocationKey){
             val editor = sharedPreferences.edit()
             editor.putString(CURRENT_KEY, locationKey)
@@ -54,7 +54,7 @@ class LocationRepositoryImpl(
         }
     }
 
-    private fun getCurrentLocationKey(): String {
+    override fun getLocationKey(): String {
         return sharedPreferences.getString(CURRENT_KEY, "") ?: ""
     }
 

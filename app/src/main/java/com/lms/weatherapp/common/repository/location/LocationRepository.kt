@@ -7,5 +7,7 @@ import com.lms.weatherapp.location.model.Location
 
 interface LocationRepository {
     fun getLocationKey(callback: RepositoryCallback<Location?, String>, location: String)
+    fun saveLocationKey(locationKey: String)
+    fun getLocationKey() : String
 }
 

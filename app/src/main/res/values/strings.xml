@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+    <string name="location_permission_title">Location Permission</string>
+    <string name="location_permission_text">If you don\'t accept the permission you can not use the app</string>
+    <string name="location_permission_accept_text">Accept the permission to use the app</string>
+    <string name="accept_permission">OK</string>
+    <string name="cancel_permission">Cancel</string>
+    <string name="location_not_found">Location not found</string>
+    <string name="location_try_again">We are having problems to find your location. Try again later</string>
 </resources>
