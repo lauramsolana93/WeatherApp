@@ -11,6 +11,10 @@
         <entry key="../../../../../layout/compose-model-1624961007915.xml" value="0.25" />
         <entry key="../../../../../layout/compose-model-1624966831679.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_cloudy.xml" value="0.19444444444444445" />
+        <entry key="app/src/main/res/layout/details_layout.xml" value="0.2368659420289855" />
+        <entry key="app/src/main/res/layout/item_forecast_row.xml" value="0.346875" />
+        <entry key="app/src/main/res/layout/loading_layout.xml" value="0.346875" />
+        <entry key="app/src/main/res/layout/main_activity.xml" value="0.18211752786220872" />
         <entry key="app/src/main/res/layout/splash_activity.xml" value="0.16869300911854104" />
       </map>
     </option>
