@@ -6,6 +6,7 @@ import com.lms.weatherapp.location.model.Location
 interface WeatherFactory {
 
     fun getWeatherByLocation(callback: Callback)
+    fun get5DaysForecast(callback: Callback)
 
     interface Callback {
         fun onSuccess(any:Any)

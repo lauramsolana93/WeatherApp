@@ -7,4 +7,6 @@
     <string name="cancel_permission">Cancel</string>
     <string name="location_not_found">Location not found</string>
     <string name="location_try_again">We are having problems to find your location. Try again later</string>
+    <string name="weather_not_found">Weather not found</string>
+    <string name="weather_try_again">We are having problems to find the weather information. Try again later</string>
 </resources>

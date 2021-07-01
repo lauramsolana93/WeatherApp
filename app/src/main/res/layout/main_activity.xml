@@ -5,26 +5,53 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/weatherIcon"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="150dp"
-        android:src="@drawable/ic_cloudy"
+        android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_loop="true" />
+
+    <TextView
+        android:id="@+id/weather_temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:textSize="60sp"
+        app:layout_constraintBottom_toBottomOf="@+id/weatherIcon"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/weatherIcon"
+        tools:text="20º" />
 
     <TextView
         android:id="@+id/weatherText"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/weatherIcon"
+        app:layout_constraintStart_toStartOf="@+id/weather_temperature"
         app:layout_constraintTop_toBottomOf="@+id/weatherIcon"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:textSize="18sp"/>
+        tools:text="Nublado" />
+
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading_layout" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_forecasat"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weatherText" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
