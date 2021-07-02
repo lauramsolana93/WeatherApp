@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.getCurrentWeatherByLocationKey()
 
         viewModel.getCurrentWeather().observe(this, {
-            bindCurrendWeatherViews(it)
+            bindCurrentWeatherViews(it)
             viewModel.get5DaysForecastByLocationKey()
         })
 
@@ -63,13 +63,17 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        viewModel.getForecatWeather().observe(this, {
+        viewModel.getForecastWeather().observe(this, {
             bindForecastViews(it)
+        })
+
+        viewModel.getLocationName().observe(this, {
+            binding.weatherLocation.text = it
         })
 
     }
 
-    private fun bindCurrendWeatherViews(weather : CurrentWeather){
+    private fun bindCurrentWeatherViews(weather : CurrentWeather){
         binding.weatherIcon.setAnimation(getJsonWeather(weather.weatherIcon))
         binding.weatherIcon.playAnimation()
         binding.weatherText.text = weather.weatherText

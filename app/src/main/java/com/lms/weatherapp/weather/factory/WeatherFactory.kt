@@ -7,6 +7,7 @@ interface WeatherFactory {
 
     fun getWeatherByLocation(callback: Callback)
     fun get5DaysForecast(callback: Callback)
+    fun getCurrentLocationName() : String
 
     interface Callback {
         fun onSuccess(any:Any)

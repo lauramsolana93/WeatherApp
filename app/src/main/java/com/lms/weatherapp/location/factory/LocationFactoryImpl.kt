@@ -1,6 +1,6 @@
 package com.lms.weatherapp.location.factory
 
-import com.lms.weatherapp.common.repository.location.LocationRepository
+import com.lms.weatherapp.location.repository.LocationRepository
 import com.lms.weatherapp.location.model.Location
 import com.lms.weatherapp.network.RepositoryCallback
 

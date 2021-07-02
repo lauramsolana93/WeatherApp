@@ -1,7 +1,7 @@
 package com.lms.wheatherapp.location.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.lms.weatherapp.common.repository.location.LocationRepository
+import com.lms.weatherapp.location.repository.LocationRepository
 import com.lms.weatherapp.location.factory.LocationFactory
 import com.lms.weatherapp.location.viewmodel.LocationViewModel
 import com.nhaarman.mockitokotlin2.any

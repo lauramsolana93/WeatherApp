@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.lms.weatherapp.common.utils.dateFormater
+import com.lms.weatherapp.common.utils.faranheidToCelsius
 import com.lms.weatherapp.common.utils.getDrawableWeather
 import com.lms.weatherapp.ui.views.adapter.ForecastAdapter.*
 import com.lms.weatherapp.weather.model.DailyForecast
@@ -38,8 +39,10 @@ class ForecastAdapter(private val forecast: List<DailyForecast>) : RecyclerView.
 
     override fun onBindViewHolder(holder: ForecastViewHolder, position: Int) {
         holder.date.text = forecast[position].date.dateFormater()
-        holder.max.text = "Max: ${forecast[position].temperature.maximum.value}${forecast[position].temperature.maximum.unit}"
-        holder.min.text = "Max: ${forecast[position].temperature.minimum.value}${forecast[position].temperature.minimum.unit}"
+        val max = "${forecast[position].temperature.maximum.value}${forecast[position].temperature.maximum.unit}"
+        val min = "${forecast[position].temperature.minimum.value}${forecast[position].temperature.minimum.unit}"
+        holder.max.text = "Max: ${max.faranheidToCelsius()}"
+        holder.min.text = "Max: ${min.faranheidToCelsius()}"
         holder.iconDay.setImageResource(getDrawableWeather(forecast[position].day.icon))
         holder.iconNight.setImageResource(getDrawableWeather(forecast[position].night.icon))
     }

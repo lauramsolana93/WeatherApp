@@ -1,4 +1,4 @@
-package com.lms.weatherapp.common.repository.weather
+package com.lms.weatherapp.weather.repository
 
 import android.content.SharedPreferences
 import com.lms.weatherapp.common.utils.mapToCurrentWeather
@@ -7,7 +7,6 @@ import com.lms.weatherapp.model.weather.CurrentConditionsResponse
 import com.lms.weatherapp.network.RepositoryCallback
 import com.lms.weatherapp.network.WeatherApiService
 import com.lms.weatherapp.weather.model.CurrentWeather
-import com.lms.weatherapp.location.model.Location
 import com.lms.weatherapp.model.weather.ForecastResponse
 import com.lms.weatherapp.weather.model.ForecastWeather
 import retrofit2.Call
@@ -15,6 +14,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 const val CURRENT_KEY = "CURRENT_KEY"
+const val CURRENT_NAME = "CURRENT_NAME"
 
 class WeatherRepositoryImpl(
     private val api: WeatherApiService,
@@ -50,7 +50,7 @@ class WeatherRepositoryImpl(
                 }
 
                 override fun onFailure(call: Call<List<CurrentConditionsResponse>>, t: Throwable) {
-                    callback.onError("Couldn't find location")
+                    callback.onError("Couldn't find location"  + "$t")
                 }
             }
         getCurrentWeather?.enqueue(wrapCallback)
@@ -58,6 +58,10 @@ class WeatherRepositoryImpl(
 
     override fun getLocationKey(): String {
         return sharedPreferences.getString(CURRENT_KEY, "") ?: ""
+    }
+
+    override fun getLocationName(): String {
+        return sharedPreferences.getString(CURRENT_NAME, "") ?: ""
     }
 
     override fun get5DaysForecast(callback: RepositoryCallback<ForecastWeather, String>) {

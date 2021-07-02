@@ -5,6 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/weather_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:textSize="32sp"
+        app:layout_constraintBottom_toTopOf="@+id/weather_temperature"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Sabadell" />
+
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/weatherIcon"
         android:layout_width="80dp"

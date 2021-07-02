@@ -2,7 +2,7 @@ package com.lms.weatherapp.location.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.lms.weatherapp.common.repository.location.LocationRepository
+import com.lms.weatherapp.location.repository.LocationRepository
 import com.lms.weatherapp.location.factory.LocationFactory
 
 class LocationViewModelFactory(

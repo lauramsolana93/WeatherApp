@@ -1,11 +1,10 @@
 package com.lms.wheatherapp.weather.factory
 
-import com.lms.weatherapp.common.repository.weather.WeatherRepository
+import com.lms.weatherapp.weather.repository.WeatherRepository
 import com.lms.weatherapp.network.RepositoryCallback
 import com.lms.weatherapp.weather.factory.WeatherFactory
 import com.lms.weatherapp.weather.factory.WeatherFactoryImpl
 import com.lms.weatherapp.weather.model.CurrentWeather
-import com.lms.weatherapp.weather.model.DailyForecast
 import com.lms.weatherapp.weather.model.ForecastWeather
 import com.lms.wheatherapp.utils.forecastWeatherMock
 import com.nhaarman.mockitokotlin2.*

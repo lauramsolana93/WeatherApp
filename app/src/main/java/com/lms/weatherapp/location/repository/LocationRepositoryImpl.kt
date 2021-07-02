@@ -1,4 +1,4 @@
-package com.lms.weatherapp.common.repository.location
+package com.lms.weatherapp.location.repository
 
 import android.content.SharedPreferences
 import com.lms.weatherapp.model.location.GeopositionResponse
@@ -9,6 +9,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 const val CURRENT_KEY = "CURRENT_KEY"
+const val CURRENT_NAME = "CURRENT_NAME"
 class LocationRepositoryImpl(
     private val api: WeatherApiService,
     private val sharedPreferences: SharedPreferences
@@ -31,7 +32,8 @@ class LocationRepositoryImpl(
                         val loc = response.body()
                         if (loc != null) {
                             saveLocationKey(loc.key)
-                            callback.onSuccess(Location(loc.key))
+                            saveLocationName(loc.localizedName)
+                            callback.onSuccess(Location(loc.key, loc.localizedName))
                             return
                         }
                     }
@@ -54,8 +56,23 @@ class LocationRepositoryImpl(
         }
     }
 
+    override fun saveLocationName(locationName: String) {
+        val currentLocationName = getLocationName()
+        if(locationName != currentLocationName){
+            val editor = sharedPreferences.edit()
+            editor.putString(CURRENT_NAME, locationName)
+            editor.apply()
+        }
+    }
+
     override fun getLocationKey(): String {
         return sharedPreferences.getString(CURRENT_KEY, "") ?: ""
     }
+
+    override fun getLocationName(): String {
+        return sharedPreferences.getString(CURRENT_NAME, "") ?: ""
+    }
+
+
 
 }

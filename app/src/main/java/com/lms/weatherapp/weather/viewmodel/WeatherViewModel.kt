@@ -3,7 +3,7 @@ package com.lms.weatherapp.weather.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.lms.weatherapp.common.repository.weather.WeatherRepository
+import com.lms.weatherapp.weather.repository.WeatherRepository
 import com.lms.weatherapp.weather.factory.WeatherFactory
 import com.lms.weatherapp.weather.model.CurrentWeather
 import com.lms.weatherapp.weather.model.ForecastWeather
@@ -17,15 +17,18 @@ class WeatherViewModel(
     private val error = MutableLiveData<String>()
     private val weather = MutableLiveData<CurrentWeather>()
     private val forecast = MutableLiveData<ForecastWeather>()
+    private val locationName = MutableLiveData<String>()
 
     fun getLoading() : LiveData<Boolean> = loading
     fun getError() : LiveData<String> = error
     fun getCurrentWeather() : LiveData<CurrentWeather> = weather
-    fun getForecatWeather(): LiveData<ForecastWeather> = forecast
+    fun getForecastWeather(): LiveData<ForecastWeather> = forecast
+    fun getLocationName(): LiveData<String> = locationName
 
     fun getCurrentWeatherByLocationKey(){
         factory.getWeatherByLocation(object : WeatherFactory.Callback{
             override fun onSuccess(any: Any) {
+                loading.value = false
                 val weatherList = any as List<CurrentWeather>
                 weather.value = weatherList[0]
             }
@@ -35,6 +38,7 @@ class WeatherViewModel(
             }
 
             override fun onError(e: String) {
+                loading.value = false
                 error.value = e
             }
         })
@@ -43,6 +47,8 @@ class WeatherViewModel(
     fun get5DaysForecastByLocationKey(){
         factory.get5DaysForecast(object : WeatherFactory.Callback {
             override fun onSuccess(any: Any) {
+                locationName()
+                loading.value = false
                 forecast.value = any as ForecastWeather
             }
 
@@ -51,9 +57,14 @@ class WeatherViewModel(
             }
 
             override fun onError(e: String) {
+                loading.value = false
                 error.value = e
             }
         })
+    }
+
+    private fun locationName(){
+        locationName.value = repository.getLocationName()
     }
 
 

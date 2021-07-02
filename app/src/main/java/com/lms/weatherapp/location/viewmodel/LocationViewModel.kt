@@ -3,7 +3,7 @@ package com.lms.weatherapp.location.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.lms.weatherapp.common.repository.location.LocationRepository
+import com.lms.weatherapp.location.repository.LocationRepository
 import com.lms.weatherapp.location.factory.LocationFactory
 import com.lms.weatherapp.location.model.Location
 

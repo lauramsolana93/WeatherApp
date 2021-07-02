@@ -1,7 +1,6 @@
 package com.lms.weatherapp.weather.factory
 
-import com.lms.weatherapp.common.repository.weather.WeatherRepository
-import com.lms.weatherapp.location.model.Location
+import com.lms.weatherapp.weather.repository.WeatherRepository
 import com.lms.weatherapp.network.RepositoryCallback
 import com.lms.weatherapp.weather.model.CurrentWeather
 import com.lms.weatherapp.weather.model.ForecastWeather
@@ -44,6 +43,12 @@ class WeatherFactoryImpl(
             }
         )
     }
+
+    override fun getCurrentLocationName(): String {
+        return repository.getLocationName()
+    }
+
+
 
 
 }

@@ -1,8 +1,8 @@
 package com.lms.wheatherapp.repository
 
 import android.content.SharedPreferences
-import com.lms.weatherapp.common.repository.location.LocationRepository
-import com.lms.weatherapp.common.repository.location.LocationRepositoryImpl
+import com.lms.weatherapp.location.repository.LocationRepository
+import com.lms.weatherapp.location.repository.LocationRepositoryImpl
 import com.lms.weatherapp.network.WeatherApiService
 import com.nhaarman.mockitokotlin2.*
 

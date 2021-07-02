@@ -2,6 +2,7 @@ package com.lms.weatherapp.ui.views
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -59,7 +60,10 @@ class SplashActivity : BaseActivity() {
 
     override fun permissionGranted() {
         super.permissionGranted()
-        if(location != null) viewModel.initLocation(location ?: "")
+        if(location != null){
+            Log.e("SPLASH", "HELLO: $location")
+            viewModel.initLocation(location ?: "")
+        }
     }
 }
 

@@ -1,6 +1,6 @@
 package com.lms.wheatherapp.location.factory
 
-import com.lms.weatherapp.common.repository.location.LocationRepository
+import com.lms.weatherapp.location.repository.LocationRepository
 import com.lms.weatherapp.location.factory.LocationFactory
 import com.lms.weatherapp.location.factory.LocationFactoryImpl
 import com.lms.weatherapp.network.RepositoryCallback
@@ -34,7 +34,7 @@ class LocationFactoryUnitTest {
         val callback = mock<LocationFactory.Callback>()
         setUpRepositoryWithGeolocation(repository)
         factory.buildLocation(callback, location)
-        verify(callback).onSuccess(Location("301307"))
+        verify(callback).onSuccess(Location("301307", "Sabadell"))
     }
 
     @Test
@@ -56,7 +56,7 @@ class LocationFactoryUnitTest {
     @Test
     fun buildWeather_shouldBuildWeatherWithLocation(){
         setUpRepositoryWithGeolocation(repository)
-        val locat = Location("301307")
+        val locat = Location("301307", "Sabadell")
 
         factory.buildLocation(object : LocationFactory.Callback {
             override fun onSuccess(any: Any) {
@@ -97,7 +97,7 @@ class LocationFactoryUnitTest {
     private fun setUpRepositoryWithGeolocation(repository: LocationRepository){
         doAnswer {
             val callback: RepositoryCallback<Location?, String> = it.getArgument(0)
-            callback.onSuccess(Location("301307"))
+            callback.onSuccess(Location("301307", "Sabadell"))
         }.whenever(repository).getLocationKey(any(), any())
     }
 

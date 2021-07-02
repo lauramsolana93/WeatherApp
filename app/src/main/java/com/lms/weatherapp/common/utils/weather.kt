@@ -2,6 +2,7 @@ package com.lms.weatherapp.common.utils
 
 import com.lms.wheatherapp.R
 import java.text.SimpleDateFormat
+import kotlin.math.roundToInt
 
 fun getJsonWeather(weatherIcon: Int): Int {
     var icon: Int? = null
@@ -121,6 +122,17 @@ fun String.dateFormater(): String {
     format = SimpleDateFormat("dd/M/yyyy")
     val date = format.format(newDate)
     return date.toString()
+}
+
+fun String.faranheidToCelsius(): String {
+    val data = this.replace("F", "").toDouble()
+    var celsius : Double = data
+    if(this.contains("F")){
+        this.replace("F", "")
+        celsius =( (data  -  32  ) *  5)/9
+    }
+    celsius = (celsius * 10.0).roundToInt() / 10.0
+    return "${celsius}ºC"
 }
 
 enum class Icons(val json: Int, val drawable: Int){

@@ -69,6 +69,7 @@ dependencies {
 
     //mockito
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0'
+    testImplementation 'org.mockito:mockito-inline:3.10.0'
 
 
     testImplementation 'junit:junit:4.13.2'
