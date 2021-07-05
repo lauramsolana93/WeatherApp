@@ -58,3 +58,21 @@ fun NightResponse.mapToNight(): Night{
         hasPrecipitation = this.hasPrecipitation
     )
 }
+
+fun HourlyResponse.mapToHourlyWeather(): HourlyWeather {
+    return HourlyWeather(
+        dateTime = this.dateTime,
+        weatherIcon = this.weatherIcon,
+        iconPhrase = this.iconPhrase,
+        temperature = this.temperatureHourly.mapToTemperatureHourly(),
+        precipitationProb = this.precipitationProbability
+    )
+}
+
+fun TemperatureHourly.mapToTemperatureHourly(): TemperatureHourly {
+    return TemperatureHourly(
+        value = this.value,
+        unit = this.unit,
+        unitType = this.unitType
+    )
+}

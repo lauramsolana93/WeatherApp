@@ -4,6 +4,7 @@ import com.lms.weatherapp.weather.repository.WeatherRepository
 import com.lms.weatherapp.network.RepositoryCallback
 import com.lms.weatherapp.weather.model.CurrentWeather
 import com.lms.weatherapp.weather.model.ForecastWeather
+import com.lms.weatherapp.weather.model.HourlyWeather
 
 class WeatherFactoryImpl(
     private val repository: WeatherRepository
@@ -46,6 +47,24 @@ class WeatherFactoryImpl(
 
     override fun getCurrentLocationName(): String {
         return repository.getLocationName()
+    }
+
+    override fun getHourly12Hours(callback: WeatherFactory.Callback) {
+        repository.getHourly12Hours(
+            object : RepositoryCallback<List<HourlyWeather>, String>{
+                override fun onSuccess(t: List<HourlyWeather>) {
+                    callback.onSuccess(t)
+                }
+
+                override fun onLoading() {
+                    callback.onLoading(true)
+                }
+
+                override fun onError(e: String) {
+                    callback.onError(e)
+                }
+            }
+        )
     }
 
 

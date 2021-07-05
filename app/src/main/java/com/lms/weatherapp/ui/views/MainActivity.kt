@@ -71,6 +71,10 @@ class MainActivity : AppCompatActivity() {
             binding.weatherLocation.text = it
         })
 
+        viewModel.getHourly().observe(this, {
+
+        })
+
     }
 
     private fun bindCurrentWeatherViews(weather : CurrentWeather){

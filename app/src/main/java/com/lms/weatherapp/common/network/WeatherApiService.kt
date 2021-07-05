@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder
 import com.lms.weatherapp.model.location.GeopositionResponse
 import com.lms.weatherapp.model.weather.CurrentConditionsResponse
 import com.lms.weatherapp.model.weather.ForecastResponse
+import com.lms.weatherapp.model.weather.HourlyResponse
 import com.lms.wheatherapp.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -35,6 +36,12 @@ interface WeatherApiService {
         @Path("locationKey") locationKey : String,
         @Query("language") language: String = "es-ES"
     ): Call<ForecastResponse>
+
+    @GET("forecasts/v1/hourly/12hour/{locationKey}")
+    fun getHourly12hours(
+        @Path("locationKey") locationKey: String,
+        @Query("language") language: String = "es-ES"
+    ): Call<List<HourlyResponse>>
 
 
     companion object Factory {

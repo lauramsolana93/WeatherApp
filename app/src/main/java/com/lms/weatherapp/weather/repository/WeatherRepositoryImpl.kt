@@ -3,12 +3,15 @@ package com.lms.weatherapp.weather.repository
 import android.content.SharedPreferences
 import com.lms.weatherapp.common.utils.mapToCurrentWeather
 import com.lms.weatherapp.common.utils.mapToForecastWeather
+import com.lms.weatherapp.common.utils.mapToHourlyWeather
 import com.lms.weatherapp.model.weather.CurrentConditionsResponse
 import com.lms.weatherapp.network.RepositoryCallback
 import com.lms.weatherapp.network.WeatherApiService
 import com.lms.weatherapp.weather.model.CurrentWeather
 import com.lms.weatherapp.model.weather.ForecastResponse
+import com.lms.weatherapp.model.weather.HourlyResponse
 import com.lms.weatherapp.weather.model.ForecastWeather
+import com.lms.weatherapp.weather.model.HourlyWeather
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,6 +26,7 @@ class WeatherRepositoryImpl(
 
     private var getCurrentWeather: Call<List<CurrentConditionsResponse>>? = null
     private var get5DaysForecast: Call<ForecastResponse>? = null
+    private var getHourly12hours: Call<List<HourlyResponse>>? = null
 
     override fun getWeatherByLocationKey(
         callback: RepositoryCallback<List<CurrentWeather>, String>
@@ -88,6 +92,36 @@ class WeatherRepositoryImpl(
                 }
             }
         get5DaysForecast?.enqueue(wrapCallback)
+    }
+
+    override fun getHourly12Hours(callback: RepositoryCallback<List<HourlyWeather>, String>) {
+        getHourly12hours?.cancel()
+        getHourly12hours = api.getHourly12hours(getLocationKey())
+        val wrapCallback =
+            object : Callback<List<HourlyResponse>>{
+                override fun onResponse(
+                    call: Call<List<HourlyResponse>>,
+                    response: Response<List<HourlyResponse>>
+                ) {
+                    if(response != null && response.isSuccessful){
+                        val hourlyResponseList = response.body()
+                        val hourlyList = ArrayList<HourlyWeather>()
+                        if(hourlyResponseList != null){
+                            hourlyResponseList.forEach {
+                                hourlyList.add(it.mapToHourlyWeather())
+                            }
+                            callback.onSuccess(hourlyList)
+                            return
+                        }
+                    }
+                    callback.onError("Couldn't find hourly weather")
+                }
+
+                override fun onFailure(call: Call<List<HourlyResponse>>, t: Throwable) {
+                    callback.onError("Couldn't find hourly weather")
+                }
+            }
+        getHourly12hours?.enqueue(wrapCallback)
     }
 
 }
