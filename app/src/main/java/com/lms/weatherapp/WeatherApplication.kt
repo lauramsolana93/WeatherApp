@@ -1,6 +1,7 @@
 package com.lms.weatherapp
 
 import android.app.Application
+import android.content.Context
 import com.lms.weatherapp.network.WeatherApiService
 import com.lms.weatherapp.location.repository.LocationRepository
 import com.lms.weatherapp.location.repository.LocationRepositoryImpl
@@ -35,3 +36,5 @@ class WeatherApplication: Application() {
         LocationFactoryImpl(locationRepository)
     }
 }
+
+fun Context.asApp() = this.applicationContext as WeatherApplication
