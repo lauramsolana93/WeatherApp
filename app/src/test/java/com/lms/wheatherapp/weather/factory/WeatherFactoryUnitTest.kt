@@ -1,11 +1,13 @@
 package com.lms.wheatherapp.weather.factory
 
+import com.lms.weatherapp.model.weather.TemperatureHourly
 import com.lms.weatherapp.weather.repository.WeatherRepository
 import com.lms.weatherapp.network.RepositoryCallback
 import com.lms.weatherapp.weather.factory.WeatherFactory
 import com.lms.weatherapp.weather.factory.WeatherFactoryImpl
 import com.lms.weatherapp.weather.model.CurrentWeather
 import com.lms.weatherapp.weather.model.ForecastWeather
+import com.lms.weatherapp.weather.model.HourlyWeather
 import com.lms.wheatherapp.utils.forecastWeatherMock
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Assert
@@ -21,6 +23,12 @@ class WeatherFactoryUnitTest {
         CurrentWeather("30º", "32º", 7, "nublado"),
         CurrentWeather("30º", "32º", 7, "nublado"),
         CurrentWeather("30º", "32º", 7, "nublado")
+    )
+    private val listHourlyWeather = listOf(
+        HourlyWeather("",1, "", TemperatureHourly(12, "", 1), 2),
+        HourlyWeather("",1, "", TemperatureHourly(12, "", 1), 2),
+        HourlyWeather("",1, "", TemperatureHourly(12, "", 1), 2),
+        HourlyWeather("",1, "", TemperatureHourly(12, "", 1), 2),
     )
 
     @Before
@@ -79,6 +87,7 @@ class WeatherFactoryUnitTest {
         })
     }
 
+
     @Test
     fun getWeatherConditions_shouldGetWeatherConditionsLoading(){
         setUpRepositoryGetConditionsWithLoading(repository)
@@ -96,6 +105,8 @@ class WeatherFactoryUnitTest {
             }
         })
     }
+
+
 
     @Test
     fun get5DaysForecast_shouldGet5DaysForecastFromRepo(){
@@ -164,6 +175,73 @@ class WeatherFactoryUnitTest {
         })
     }
 
+    @Test
+    fun getHourly12Hours_shouldGetHorulyFromRepo(){
+        factory.getHourly12Hours(mock())
+        verify(repository).getHourly12Hours(any())
+    }
+
+    @Test
+    fun getHourly12Hours_shouldCallOnSuccess(){
+        val callback = mock<WeatherFactory.Callback>()
+        setUpRepositoryGetHourlyOnSuccess(repository)
+        factory.getHourly12Hours(callback)
+        verify(callback).onSuccess(listHourlyWeather)
+    }
+
+    @Test
+    fun getHourly12Hours_shouldCallOnError(){
+        val callback = mock<WeatherFactory.Callback>()
+        setUpRepositoryGetHourlyOnError(repository)
+        factory.getHourly12Hours(callback)
+        verify(callback).onError("Error")
+    }
+
+    @Test
+    fun getHourly12Hours_shouldCallOnLoading(){
+        val callback = mock<WeatherFactory.Callback>()
+        setUpRepostitoryGetHourlyOnLoading(repository)
+        factory.getHourly12Hours(callback)
+        verify(callback).onLoading(true)
+    }
+
+    @Test
+    fun getHourly12Hours_shouldGetHourly12Hours(){
+        setUpRepositoryGetHourlyOnSuccess(repository)
+        factory.getHourly12Hours(object : WeatherFactory.Callback {
+            override fun onSuccess(any: Any) {
+                val hourlyWeather = any as List<HourlyWeather>
+                Assert.assertEquals(listHourlyWeather, hourlyWeather)
+            }
+
+            override fun onError(e: String) {
+                Assert.fail()
+            }
+
+            override fun onLoading(isLoading: Boolean) {
+                Assert.assertEquals(false, isLoading)
+            }
+        })
+    }
+
+    @Test
+    fun getHourly12Hours_shouldGetHourlyLoading(){
+        setUpRepostitoryGetHourlyOnLoading(repository)
+        factory.getHourly12Hours(object : WeatherFactory.Callback {
+            override fun onSuccess(any: Any) {
+                Assert.assertNotNull(any)
+            }
+
+            override fun onError(e: String) {
+                Assert.fail()
+            }
+
+            override fun onLoading(isLoading: Boolean) {
+                Assert.assertTrue(isLoading)
+            }
+        })
+    }
+
 
    private fun setUpRepositoryGetConditionsOnSuccess(repository: WeatherRepository){
        doAnswer {
@@ -205,6 +283,27 @@ class WeatherFactoryUnitTest {
             val callback: RepositoryCallback<ForecastWeather, String> = it.getArgument(0)
             callback.onError("Error")
         }.whenever(repository).get5DaysForecast(any())
+    }
+
+    private fun setUpRepositoryGetHourlyOnSuccess(repository: WeatherRepository){
+        doAnswer {
+            val callback: RepositoryCallback<List<HourlyWeather>, String> = it.getArgument(0)
+            callback.onSuccess(listHourlyWeather)
+        }.whenever(repository).getHourly12Hours(any())
+    }
+
+    private fun setUpRepostitoryGetHourlyOnLoading(repository: WeatherRepository){
+        doAnswer {
+            val callback : RepositoryCallback<List<HourlyWeather>, String> = it.getArgument(0)
+            callback.onLoading()
+        }.whenever(repository).getHourly12Hours(any())
+    }
+
+    private fun setUpRepositoryGetHourlyOnError(repository: WeatherRepository){
+        doAnswer {
+            val callback: RepositoryCallback<List<HourlyWeather>, String> = it.getArgument(0)
+            callback.onError("Error")
+        }.whenever(repository).getHourly12Hours(any())
     }
 
 }

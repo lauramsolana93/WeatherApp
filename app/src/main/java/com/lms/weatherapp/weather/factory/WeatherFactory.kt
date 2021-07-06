@@ -1,7 +1,5 @@
 package com.lms.weatherapp.weather.factory
 
-import com.lms.weatherapp.location.model.Location
-
 
 interface WeatherFactory {
 
