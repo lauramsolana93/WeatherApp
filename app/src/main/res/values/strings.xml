@@ -9,4 +9,5 @@
     <string name="location_try_again">We are having problems to find your location. Try again later</string>
     <string name="weather_not_found">Weather not found</string>
     <string name="weather_try_again">We are having problems to find the weather information. Try again later</string>
+    <string name="hourly">Hourly 12 hours</string>
 </resources>

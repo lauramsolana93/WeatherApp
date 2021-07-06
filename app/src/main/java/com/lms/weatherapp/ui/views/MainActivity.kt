@@ -1,5 +1,7 @@
 package com.lms.weatherapp.ui.views
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -10,12 +12,20 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.lms.weatherapp.WeatherApplication
 import com.lms.weatherapp.common.utils.getJsonWeather
 import com.lms.weatherapp.ui.views.adapter.ForecastAdapter
+import com.lms.weatherapp.ui.views.adapter.HourlyAdapter
 import com.lms.weatherapp.weather.model.CurrentWeather
 import com.lms.weatherapp.weather.model.ForecastWeather
+import com.lms.weatherapp.weather.model.HourlyWeather
 import com.lms.weatherapp.weather.viewmodel.WeatherViewModel
 import com.lms.weatherapp.weather.viewmodel.WeatherViewModelFactory
-import com.lms.wheatherapp.R
 import com.lms.wheatherapp.databinding.MainActivityBinding
+
+
+import androidx.recyclerview.widget.RecyclerView
+
+import android.widget.LinearLayout
+import android.widget.TextView
+import com.lms.wheatherapp.R
 
 
 class MainActivity : AppCompatActivity() {
@@ -23,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: WeatherViewModel
     private lateinit var binding: MainActivityBinding
     private lateinit var adapter: ForecastAdapter
+    private lateinit var hourlyAdapter : HourlyAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +41,7 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         initRepos()
+        setUpListeners()
     }
 
     private fun initRepos(){
@@ -72,7 +84,9 @@ class MainActivity : AppCompatActivity() {
         })
 
         viewModel.getHourly().observe(this, {
-
+            it.let {
+                createDialog(it)
+            }
         })
 
     }
@@ -88,6 +102,39 @@ class MainActivity : AppCompatActivity() {
         adapter = ForecastAdapter(forecast = forecast.forecast)
         binding.rvForecasat.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvForecasat.adapter = adapter
+    }
+
+    private fun setUpListeners(){
+        binding.hourlyIcon.setOnClickListener {
+            viewModel.getHourly12Hours()
+        }
+    }
+
+
+
+    private fun createDialog(hourlyList: List<HourlyWeather>) {
+
+        val dialog = Dialog(this)
+
+        dialog.setContentView(R.layout.dialog_hourly)
+        dialog.setCancelable(true)
+
+        if (dialog.window != null) {
+            dialog.window!!.setLayout(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        }
+        hourlyAdapter = HourlyAdapter(hourlyList)
+        val list: RecyclerView = dialog.findViewById(R.id.hourly_rv)
+        val title : TextView = dialog.findViewById(R.id.hourlyTitle)
+        title.text = getString(R.string.hourly)
+        list.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
+        list.adapter = hourlyAdapter
+
+        dialog.show()
+
+
     }
 }
 

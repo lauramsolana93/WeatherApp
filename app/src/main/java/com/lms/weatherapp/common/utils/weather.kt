@@ -124,6 +124,14 @@ fun String.dateFormater(): String {
     return date.toString()
 }
 
+fun String.getHour():String {
+    var format = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ")
+    val newHour = format.parse(this)
+    format = SimpleDateFormat("hh:mm")
+    val hour = format.format(newHour)
+    return hour.toString()
+}
+
 fun String.faranheidToCelsius(): String {
     val data = this.replace("F", "").toDouble()
     var celsius : Double = data

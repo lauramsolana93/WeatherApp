@@ -1,6 +1,5 @@
 package com.lms.weatherapp.network
 
-import com.google.gson.GsonBuilder
 import com.lms.weatherapp.model.location.GeopositionResponse
 import com.lms.weatherapp.model.weather.CurrentConditionsResponse
 import com.lms.weatherapp.model.weather.ForecastResponse
@@ -46,7 +45,6 @@ interface WeatherApiService {
 
     companion object Factory {
         fun create() : WeatherApiService {
-
             val client = OkHttpClient.Builder().apply {
                     val interceptor = HttpLoggingInterceptor()
                     interceptor.level = HttpLoggingInterceptor.Level.BODY
