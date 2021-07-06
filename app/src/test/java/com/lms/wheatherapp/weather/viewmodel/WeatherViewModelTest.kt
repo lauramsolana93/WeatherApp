@@ -65,6 +65,12 @@ class WeatherViewModelTest {
     }
 
     @Test
+    fun getHourly12Hours_shouldGetHourly(){
+        viewModel.getHourly12Hours()
+        verify(factory).getHourly12Hours(any())
+    }
+
+    @Test
     fun getCurrentWeather_shouldHideLoading_whenFactoryReturnsError(){
         setUpFactoryWithErrorCurrentWeather()
         viewModel.getCurrentWeatherByLocationKey()
@@ -75,6 +81,13 @@ class WeatherViewModelTest {
     fun get5DaysForecast_shouldHideLoading_whenFactoryReturnsError(){
         setUpFactoryWithErrorForecastWeather()
         viewModel.get5DaysForecastByLocationKey()
+        verify(loadingObserver).onChanged(eq(false))
+    }
+
+    @Test
+    fun getHourly12Hours_shouldHideLoading_whenHourlyReturnsError(){
+        setUpFactoryWithErrorHourlyWeather()
+        viewModel.getHourly12Hours()
         verify(loadingObserver).onChanged(eq(false))
     }
 
@@ -91,6 +104,13 @@ class WeatherViewModelTest {
             val callback: WeatherFactory.Callback = it.getArgument(0)
             callback.onError("Error")
         }.whenever(factory).get5DaysForecast(any())
+    }
+
+    private fun setUpFactoryWithErrorHourlyWeather(){
+        doAnswer {
+            val callback : WeatherFactory.Callback = it.getArgument(0)
+            callback.onError("Error")
+        }.whenever(factory).getHourly12Hours(any())
     }
 
 }
