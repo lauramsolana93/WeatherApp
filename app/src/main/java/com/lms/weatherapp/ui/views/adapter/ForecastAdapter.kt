@@ -42,7 +42,7 @@ class ForecastAdapter(private val forecast: List<DailyForecast>) : RecyclerView.
         val max = "${forecast[position].temperature.maximum.value}${forecast[position].temperature.maximum.unit}"
         val min = "${forecast[position].temperature.minimum.value}${forecast[position].temperature.minimum.unit}"
         holder.max.text = "Max: ${max.faranheidToCelsius()}"
-        holder.min.text = "Max: ${min.faranheidToCelsius()}"
+        holder.min.text = "Min: ${min.faranheidToCelsius()}"
         holder.iconDay.setImageResource(getDrawableWeather(forecast[position].day.icon))
         holder.iconNight.setImageResource(getDrawableWeather(forecast[position].night.icon))
     }
