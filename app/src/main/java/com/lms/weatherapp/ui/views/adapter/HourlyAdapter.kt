@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.lms.weatherapp.common.utils.faranheidToCelsius
 import com.lms.weatherapp.common.utils.getDrawableWeather
 import com.lms.weatherapp.common.utils.getHour
 import com.lms.weatherapp.weather.model.HourlyWeather
@@ -32,7 +33,8 @@ class HourlyAdapter(private val hourly: List<HourlyWeather>) : RecyclerView.Adap
 
     override fun onBindViewHolder(holder: HourlyViewHolder, position: Int) {
         holder.hour.text = hourly[position].dateTime.getHour()
-        holder.temperature.text = "${hourly[position].temperature.value}º${hourly[position].temperature.unit}"
+        val temperature = "${hourly[position].temperature.value}${hourly[position].temperature.unit}"
+        holder.temperature.text = temperature.faranheidToCelsius()
         holder.image.setImageResource(getDrawableWeather(hourly[position].weatherIcon))
     }
 
