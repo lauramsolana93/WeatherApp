@@ -44,10 +44,6 @@ class MainActivity : AppCompatActivity() {
         setUpListeners()
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
-    }
 
     private fun initRepos(){
         val repository = (application as WeatherApplication).weatherRepository

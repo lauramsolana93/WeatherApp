@@ -59,6 +59,7 @@ class SplashActivityCompose : BaseActivity() {
 
         viewModel.getLocation().observe(this, {
             startActivity(Intent(this, MainActivity::class.java))
+            finish()
         })
 
         viewModel.getError().observe(this, {
