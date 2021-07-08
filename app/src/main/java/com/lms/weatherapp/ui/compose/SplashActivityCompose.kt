@@ -12,6 +12,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -21,6 +22,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieAnimationSpec
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.lms.weatherapp.WeatherApplication
 import com.lms.weatherapp.location.viewmodel.LocationViewModel
@@ -90,6 +93,11 @@ fun Logo(){
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(Modifier.size(100.dp)){
+            /*val animationSpec = remember { LottieAnimationSpec.RawRes(R.raw.weather_animation) }
+            LottieAnimation(
+                animationSpec,
+                modifier = Modifier.size(100.dp)
+            )*/
             Image(
                 ImageVector.vectorResource(
                     id = R.drawable.ic_cloudy
@@ -97,6 +105,7 @@ fun Logo(){
                 "Localized description",
             )
         }
+
     }
 
 
