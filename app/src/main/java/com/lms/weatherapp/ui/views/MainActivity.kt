@@ -1,13 +1,16 @@
 package com.lms.weatherapp.ui.views
 
-import android.app.AlertDialog
+
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.lms.weatherapp.WeatherApplication
 import com.lms.weatherapp.common.utils.getJsonWeather
@@ -18,14 +21,8 @@ import com.lms.weatherapp.weather.model.ForecastWeather
 import com.lms.weatherapp.weather.model.HourlyWeather
 import com.lms.weatherapp.weather.viewmodel.WeatherViewModel
 import com.lms.weatherapp.weather.viewmodel.WeatherViewModelFactory
-import com.lms.wheatherapp.databinding.MainActivityBinding
-
-
-import androidx.recyclerview.widget.RecyclerView
-
-import android.widget.LinearLayout
-import android.widget.TextView
 import com.lms.wheatherapp.R
+import com.lms.wheatherapp.databinding.MainActivityBinding
 
 
 class MainActivity : AppCompatActivity() {
