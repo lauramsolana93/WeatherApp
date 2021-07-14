@@ -49,19 +49,19 @@ class MainActivity : AppCompatActivity() {
             WeatherViewModel::class.java)
         viewModel.getCurrentWeatherByLocationKey()
 
-        viewModel.getCurrentWeather().observe(this, {
+        /*viewModel.getCurrentWeather().observe(this, {
             bindCurrentWeatherViews(it)
             viewModel.get5DaysForecastByLocationKey()
-        })
+        })*/
 
         viewModel.getError().observe(this, {
             MaterialAlertDialogBuilder(this)
                 .setTitle(getString(R.string.weather_not_found))
                 .setMessage(getString(R.string.weather_try_again))
                 .setPositiveButton(getString(R.string.accept_permission)){ _, _ ->
-                    viewModel.getCurrentWeather()
+                    viewModel.getCurrentWeatherByLocationKey()
                 }
-                .setOnDismissListener {  viewModel.getCurrentWeather() }
+                .setOnDismissListener {  viewModel.getCurrentWeatherByLocationKey() }
                 .show()
         })
 

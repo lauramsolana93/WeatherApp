@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,20 +29,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.lms.weatherapp.WeatherApplication
-import com.lms.weatherapp.common.utils.dateFormater
 import com.lms.weatherapp.common.utils.faranheidToCelsius
 import com.lms.weatherapp.common.utils.getDrawableWeather
 import com.lms.weatherapp.model.common.Metric
 import com.lms.weatherapp.ui.theme.WeatherComposeTheme
 import com.lms.weatherapp.ui.views.adapter.HourlyAdapter
-import com.lms.weatherapp.weather.factory.WeatherFactory
 import com.lms.weatherapp.weather.model.*
-import com.lms.weatherapp.weather.repository.WeatherRepository
 import com.lms.weatherapp.weather.viewmodel.WeatherViewModel
 import com.lms.weatherapp.weather.viewmodel.WeatherViewModelFactory
 import com.lms.wheatherapp.R
@@ -66,8 +63,14 @@ class MainActivityCompose : AppCompatActivity() {
             )
         setContent {
             WeatherComposeTheme {
-                LocationName(viewModel = viewModel)
-                ForecastWeather12hours(viewModel = viewModel)
+                Surface {
+                    Column(modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Top) {
+                        LocationName(viewModel = viewModel)
+                        CurrentWeatherView(viewModel = viewModel)
+                        ForecastWeather12hours(viewModel = viewModel)
+                    }
+                }
             }
         }
         viewModel.getCurrentWeatherByLocationKey()
@@ -75,19 +78,15 @@ class MainActivityCompose : AppCompatActivity() {
     }
 
     private fun initRepos() {
-        viewModel.getCurrentWeather().observe(this, {
-            viewModel.get5DaysForecastByLocationKey()
-            viewModel.locationName()
-        })
 
         viewModel.getError().observe(this, {
             MaterialAlertDialogBuilder(this)
                 .setTitle(getString(R.string.weather_not_found))
                 .setMessage(getString(R.string.weather_try_again))
                 .setPositiveButton(getString(R.string.accept_permission)) { _, _ ->
-                    viewModel.getCurrentWeather()
+                    viewModel.getCurrentWeatherByLocationKey()
                 }
-                .setOnDismissListener { viewModel.getCurrentWeather() }
+                .setOnDismissListener { viewModel.getCurrentWeatherByLocationKey() }
                 .show()
         })
 
@@ -180,30 +179,36 @@ fun WeatherListItem(dailyForecast: DailyForecast) {
                     )
                 }
             }
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(8.dp),
-                horizontalAlignment = Alignment.End
-            ) {
-                Icon(
-                    painter = painterResource(id = getDrawableWeather(dailyForecast.day.icon)),
-                    contentDescription = "",
-                    Modifier.size(20.dp)
-                )
-                Icon(
-                    painter = painterResource(id = getDrawableWeather(dailyForecast.night.icon)),
-                    contentDescription = "",
-                    Modifier.size(20.dp)
-                )
-            }
         }
+    }
+}
+
+@Composable
+fun CurrentWeatherView(viewModel: WeatherViewModel){
+    val currentWeather : CurrentWeather by viewModel.currentWeather.observeAsState(initial = CurrentWeather("", "", 1, ""))
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(16.dp), Arrangement.SpaceBetween){
+        Image(
+            ImageVector.vectorResource(id = getDrawableWeather(currentWeather.weatherIcon)),
+            contentDescription = "",
+            Modifier.size(80.dp)
+        )
+        Box(contentAlignment = Alignment.Center){
+            Text(text = currentWeather.temperature,
+                fontSize = 60.sp
+            )
+        }
+
+
+
     }
 
 }
 
 @Composable
-fun LocationName(viewModel: WeatherViewModel) {
+fun LocationName(viewModel: WeatherViewModel) { 
     val locationName: String by viewModel.locationName.observeAsState(initial = "")
     Box(
         modifier = Modifier
@@ -218,7 +223,7 @@ fun LocationName(viewModel: WeatherViewModel) {
 
 }
 
-@Preview
+/*@Preview
 @Composable
 fun weatherForecast(){
     val metric = Metric(100.0, "F", 1)
@@ -235,8 +240,20 @@ fun weatherForecast(){
         "",
         ""
     )
+    val currentWeather = CurrentWeather("", "20ºC", 1, "Soleado")
 
-    WeatherComposeTheme() {
-        WeatherListItem(dailyForecast = dailyForecast)
+    WeatherComposeTheme {
+        Surface{
+            Column(modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Top) {
+                LocationName("Sabadell")
+                CurrentWeatherView(currentWeather)
+                WeatherListItem(dailyForecast = dailyForecast)
+            }
+
+
+        }
+
+
     }
-}
+}*/

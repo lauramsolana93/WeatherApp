@@ -17,17 +17,16 @@ class WeatherViewModel(
 
     private val loading = MutableLiveData<Boolean>()
     private val error = MutableLiveData<String>()
-    private val weather = MutableLiveData<CurrentWeather>()
+    private val _weather = MutableLiveData<CurrentWeather>()
     private val _forecast = MutableLiveData<ForecastWeather>()
     private val _locationName = MutableLiveData<String>()
     private val hourly12hours = MutableLiveData<List<HourlyWeather>>()
 
     fun getLoading() : LiveData<Boolean> = loading
     fun getError() : LiveData<String> = error
-    fun getCurrentWeather() : LiveData<CurrentWeather> = weather
+    val currentWeather : LiveData<CurrentWeather> = _weather
     fun getForecastWeather(): LiveData<ForecastWeather> = _forecast
     val forecast: LiveData<ForecastWeather> = _forecast
-    //fun getLocationName(): LiveData<String> = _locationName
     val locationName : LiveData<String> = _locationName
     fun getHourly() : LiveData<List<HourlyWeather>> = hourly12hours
 
@@ -36,7 +35,7 @@ class WeatherViewModel(
             override fun onSuccess(any: Any) {
                 loading.value = false
                 val weatherList = any as List<CurrentWeather>
-                weather.value = weatherList[0]
+                _weather.value = weatherList[0]
             }
 
             override fun onLoading(isLoading: Boolean) {
