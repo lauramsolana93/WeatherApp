@@ -77,9 +77,9 @@ class MainActivity : AppCompatActivity() {
             bindForecastViews(it)
         })
 
-        viewModel.getLocationName().observe(this, {
+        /*viewModel.getLocationName().observe(this, {
             binding.weatherLocation.text = it
-        })
+        })*/
 
         viewModel.getHourly().observe(this, {
             it.let {

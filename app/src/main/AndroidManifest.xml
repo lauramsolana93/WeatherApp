@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.lms.weatherapp.ui.views.MainActivity"
+            android:name="com.lms.weatherapp.ui.compose.MainActivityCompose"
             android:exported="true"></activity>
     </application>
 
