@@ -42,9 +42,9 @@ class WeatherViewModelTest {
         forecastObserver = mock()
 
         viewModel.getLoading().observeForever(loadingObserver)
-        viewModel.getCurrentWeather().observeForever(currentWeatherObserver)
+        viewModel.currentWeather.observeForever(currentWeatherObserver)
         viewModel.getError().observeForever(errorObserver)
-        viewModel.getLocationName().observeForever(locationNameObserver)
+        viewModel.locationName.observeForever(locationNameObserver)
         viewModel.getForecastWeather().observeForever(forecastObserver)
 
         currentWeather = mock()

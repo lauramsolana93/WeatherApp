@@ -121,8 +121,6 @@ dependencies {
     }
     androidTestImplementation "com.android.support.test.espresso:espresso-intents:3.0.2"
 
-    androidTestImplementation('com.facebook.testing.screenshot:core:0.14.0') {
-        exclude group: 'com.crittercism.dexmaker', module: 'dexmaker'
-        exclude group: 'com.crittercism.dexmaker', module: 'dexmaker-dx'
-    }
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_version")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$compose_version")
 }

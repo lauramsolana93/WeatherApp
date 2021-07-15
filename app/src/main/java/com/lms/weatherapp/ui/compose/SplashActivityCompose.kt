@@ -23,7 +23,6 @@ import com.lms.weatherapp.location.viewmodel.LocationViewModel
 import com.lms.weatherapp.location.viewmodel.LocationViewModelFactory
 import com.lms.weatherapp.ui.commons.BaseActivity
 import com.lms.weatherapp.ui.theme.WeatherComposeTheme
-import com.lms.weatherapp.ui.views.MainActivity
 import com.lms.wheatherapp.R
 
 class SplashActivityCompose : BaseActivity() {
@@ -96,7 +95,7 @@ fun Logo(){
                 ImageVector.vectorResource(
                     id = R.drawable.ic_cloudy
                 ),
-                "Localized description",
+                "Logo",
             )
         }
 
