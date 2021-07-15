@@ -1,9 +1,6 @@
 package com.lms.weatherapp.ui.compose
 
-import android.app.Dialog
 import android.os.Bundle
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
@@ -23,15 +20,12 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.lms.weatherapp.WeatherApplication
 import com.lms.weatherapp.common.utils.dateFormater
 import com.lms.weatherapp.common.utils.faranheidToCelsius
 import com.lms.weatherapp.common.utils.getDrawableWeather
 import com.lms.weatherapp.ui.theme.WeatherComposeTheme
-import com.lms.weatherapp.ui.views.adapter.HourlyAdapter
 import com.lms.weatherapp.weather.model.*
 import com.lms.weatherapp.weather.viewmodel.WeatherViewModel
 import com.lms.weatherapp.weather.viewmodel.WeatherViewModelFactory
@@ -41,7 +35,7 @@ import kotlinx.coroutines.launch
 class MainActivityCompose : AppCompatActivity() {
 
     private lateinit var viewModel: WeatherViewModel
-    private lateinit var hourlyAdapter: HourlyAdapter
+
     val repository by lazy {
         (application as WeatherApplication).weatherRepository
     }
@@ -64,10 +58,6 @@ class MainActivityCompose : AppCompatActivity() {
                         verticalArrangement = Arrangement.Top
                     ) {
                         HourlyModalDrawer(viewModel = viewModel)
-                        LocationName(viewModel = viewModel)
-                        CurrentWeatherView(viewModel = viewModel)
-                        ForecastWeather5days(viewModel = viewModel)
-
                     }
                 }
             }
@@ -96,30 +86,6 @@ class MainActivityCompose : AppCompatActivity() {
 
 
     }
-
-    private fun createDialog(hourlyList: List<HourlyWeather>) {
-
-        val dialog = Dialog(this)
-
-        dialog.setContentView(R.layout.dialog_hourly)
-        dialog.setCancelable(true)
-
-        if (dialog.window != null) {
-            dialog.window!!.setLayout(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-        }
-        hourlyAdapter = HourlyAdapter(hourlyList)
-        val list: RecyclerView = dialog.findViewById(R.id.hourly_rv)
-        val title: TextView = dialog.findViewById(R.id.hourlyTitle)
-        title.text = getString(R.string.hourly)
-        list.layoutManager =
-            LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
-        list.adapter = hourlyAdapter
-
-        dialog.show()
-    }
 }
 
 @Composable
@@ -136,10 +102,7 @@ fun ForecastWeather5days(viewModel: WeatherViewModel) {
             }
         )
     }
-
 }
-
-
 
 @Composable
 fun WeatherListItem(dailyForecast: DailyForecast) {
@@ -213,10 +176,7 @@ fun CurrentWeatherView(viewModel: WeatherViewModel) {
                 fontSize = 60.sp
             )
         }
-
-
     }
-
 }
 
 @Composable
@@ -232,19 +192,16 @@ fun LocationName(viewModel: WeatherViewModel) {
             fontSize = 20.sp
         )
     }
-
 }
-
 
 @ExperimentalMaterialApi
 @Composable
 fun HourlyModalDrawer(viewModel: WeatherViewModel){
-    var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
         ModalDrawer(
             drawerContent = {
-
                     Column(Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.Top) {
                         Column(horizontalAlignment = Alignment.End){
@@ -262,8 +219,6 @@ fun HourlyModalDrawer(viewModel: WeatherViewModel){
                         }
                         ForecastHourly12hours(viewModel = viewModel)
                     }
-
-
             },
             drawerState = drawerState,
             content = {
@@ -281,7 +236,6 @@ fun HourlyModalDrawer(viewModel: WeatherViewModel){
                     LocationName(viewModel = viewModel)
                     CurrentWeatherView(viewModel = viewModel)
                     ForecastWeather5days(viewModel = viewModel)
-
                 }
             }
         )
