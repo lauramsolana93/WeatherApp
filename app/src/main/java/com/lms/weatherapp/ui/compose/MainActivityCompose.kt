@@ -12,20 +12,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
@@ -33,15 +27,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.lms.weatherapp.WeatherApplication
+import com.lms.weatherapp.common.utils.dateFormater
 import com.lms.weatherapp.common.utils.faranheidToCelsius
 import com.lms.weatherapp.common.utils.getDrawableWeather
-import com.lms.weatherapp.model.common.Metric
 import com.lms.weatherapp.ui.theme.WeatherComposeTheme
 import com.lms.weatherapp.ui.views.adapter.HourlyAdapter
 import com.lms.weatherapp.weather.model.*
 import com.lms.weatherapp.weather.viewmodel.WeatherViewModel
 import com.lms.weatherapp.weather.viewmodel.WeatherViewModelFactory
 import com.lms.wheatherapp.R
+import kotlinx.coroutines.launch
 
 class MainActivityCompose : AppCompatActivity() {
 
@@ -54,7 +49,7 @@ class MainActivityCompose : AppCompatActivity() {
         (application as WeatherApplication).weatherFactory
     }
 
-
+    @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel =
@@ -64,20 +59,29 @@ class MainActivityCompose : AppCompatActivity() {
         setContent {
             WeatherComposeTheme {
                 Surface {
-                    Column(modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Top) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Top
+                    ) {
+                        HourlyModalDrawer(viewModel = viewModel)
                         LocationName(viewModel = viewModel)
                         CurrentWeatherView(viewModel = viewModel)
-                        ForecastWeather12hours(viewModel = viewModel)
+                        ForecastWeather5days(viewModel = viewModel)
+
                     }
                 }
             }
         }
-        viewModel.getCurrentWeatherByLocationKey()
+
         initRepos()
     }
 
     private fun initRepos() {
+
+        viewModel.getCurrentWeatherByLocationKey()
+        viewModel.get5DaysForecastByLocationKey()
+        viewModel.locationName()
+
 
         viewModel.getError().observe(this, {
             MaterialAlertDialogBuilder(this)
@@ -90,11 +94,6 @@ class MainActivityCompose : AppCompatActivity() {
                 .show()
         })
 
-        viewModel.getHourly().observe(this, {
-            it.let {
-                createDialog(it)
-            }
-        })
 
     }
 
@@ -124,7 +123,7 @@ class MainActivityCompose : AppCompatActivity() {
 }
 
 @Composable
-fun ForecastWeather12hours(viewModel: WeatherViewModel?) {
+fun ForecastWeather5days(viewModel: WeatherViewModel) {
     val forecast by viewModel?.forecast!!.observeAsState(initial = ForecastWeather(listOf()))
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
@@ -139,6 +138,8 @@ fun ForecastWeather12hours(viewModel: WeatherViewModel?) {
     }
 
 }
+
+
 
 @Composable
 fun WeatherListItem(dailyForecast: DailyForecast) {
@@ -157,7 +158,10 @@ fun WeatherListItem(dailyForecast: DailyForecast) {
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.Start
             ) {
-                Text(fontSize = 20.sp,text = dailyForecast.date)//dailyForecast.date.dateFormater())
+                Text(
+                    fontSize = 20.sp,
+                    text = dailyForecast.date
+                )//dailyForecast.date.dateFormater())
                 val minTemp =
                     "${dailyForecast.temperature.minimum.value}${dailyForecast.temperature.minimum.unit}".faranheidToCelsius()
                 val maxTemp =
@@ -184,23 +188,31 @@ fun WeatherListItem(dailyForecast: DailyForecast) {
 }
 
 @Composable
-fun CurrentWeatherView(viewModel: WeatherViewModel){
-    val currentWeather : CurrentWeather by viewModel.currentWeather.observeAsState(initial = CurrentWeather("", "", 1, ""))
+fun CurrentWeatherView(viewModel: WeatherViewModel) {
+    val currentWeather: CurrentWeather by viewModel.currentWeather.observeAsState(
+        initial = CurrentWeather(
+            "",
+            "",
+            1,
+            ""
+        )
+    )
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(16.dp), Arrangement.SpaceBetween){
+            .padding(16.dp), Arrangement.SpaceBetween
+    ) {
         Image(
             ImageVector.vectorResource(id = getDrawableWeather(currentWeather.weatherIcon)),
             contentDescription = "",
             Modifier.size(80.dp)
         )
-        Box(contentAlignment = Alignment.Center){
-            Text(text = currentWeather.temperature,
+        Box(contentAlignment = Alignment.Center) {
+            Text(
+                text = currentWeather.temperature,
                 fontSize = 60.sp
             )
         }
-
 
 
     }
@@ -208,7 +220,7 @@ fun CurrentWeatherView(viewModel: WeatherViewModel){
 }
 
 @Composable
-fun LocationName(viewModel: WeatherViewModel) { 
+fun LocationName(viewModel: WeatherViewModel) {
     val locationName: String by viewModel.locationName.observeAsState(initial = "")
     Box(
         modifier = Modifier
@@ -221,6 +233,86 @@ fun LocationName(viewModel: WeatherViewModel) {
         )
     }
 
+}
+
+
+@ExperimentalMaterialApi
+@Composable
+fun HourlyModalDrawer(viewModel: WeatherViewModel){
+    var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+
+        ModalDrawer(
+            drawerContent = {
+
+                    Column(Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.Top) {
+                        Column(horizontalAlignment = Alignment.End){
+                            Surface(onClick = {
+                                scope.launch {
+                                    drawerState.close()
+                                }
+                            }) {
+                                Image(
+                                    ImageVector.vectorResource(id = R.drawable.ic_cancel),
+                                    contentDescription = "",
+                                    Modifier.size(20.dp),
+                                )
+                            }
+                        }
+                        ForecastHourly12hours(viewModel = viewModel)
+                    }
+
+
+            },
+            drawerState = drawerState,
+            content = {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Top
+                ) {
+                    Button(onClick = {
+                        scope.launch {
+                            drawerState.open()
+                        }
+                    }){
+                        Text("Hourly")
+                    }
+                    LocationName(viewModel = viewModel)
+                    CurrentWeatherView(viewModel = viewModel)
+                    ForecastWeather5days(viewModel = viewModel)
+
+                }
+            }
+        )
+}
+
+@Composable
+fun ForecastHourly12hours(viewModel: WeatherViewModel){
+    viewModel.getHourly12Hours()
+    val hourly : List<HourlyWeather> by viewModel.hourly12hours.observeAsState(listOf())
+    LazyColumn(contentPadding = PaddingValues(horizontal = 8.dp, vertical = 10.dp)) {
+        items(
+            items = hourly,
+            itemContent = {
+                HourlyListItem(hourlyWeather = it)
+            }
+        )
+    }
+}
+
+@Composable
+fun HourlyListItem(hourlyWeather : HourlyWeather){
+    Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween) {
+        Text(text = hourlyWeather.dateTime.dateFormater())
+        val temperature = "${hourlyWeather.temperature.value}${hourlyWeather.temperature.unit}"
+        Text(text = temperature.faranheidToCelsius())
+        Image(
+            ImageVector.vectorResource(id = getDrawableWeather(hourlyWeather.weatherIcon)),
+            contentDescription = "",
+            Modifier.size(20.dp)
+        )
+    }
 }
 
 /*@Preview

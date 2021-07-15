@@ -20,7 +20,7 @@ class WeatherViewModel(
     private val _weather = MutableLiveData<CurrentWeather>()
     private val _forecast = MutableLiveData<ForecastWeather>()
     private val _locationName = MutableLiveData<String>()
-    private val hourly12hours = MutableLiveData<List<HourlyWeather>>()
+    private val _hourly12hours = MutableLiveData<List<HourlyWeather>>()
 
     fun getLoading() : LiveData<Boolean> = loading
     fun getError() : LiveData<String> = error
@@ -28,7 +28,7 @@ class WeatherViewModel(
     fun getForecastWeather(): LiveData<ForecastWeather> = _forecast
     val forecast: LiveData<ForecastWeather> = _forecast
     val locationName : LiveData<String> = _locationName
-    fun getHourly() : LiveData<List<HourlyWeather>> = hourly12hours
+    val hourly12hours : LiveData<List<HourlyWeather>> = _hourly12hours
 
     fun getCurrentWeatherByLocationKey(){
         factory.getWeatherByLocation(object : WeatherFactory.Callback{
@@ -73,7 +73,7 @@ class WeatherViewModel(
             override fun onSuccess(any: Any) {
                 loading.value = false
                 val hourlyWeatherList = any as List<HourlyWeather>
-                hourly12hours.value = hourlyWeatherList
+                _hourly12hours.value = hourlyWeatherList
 
             }
 
