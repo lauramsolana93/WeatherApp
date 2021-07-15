@@ -90,7 +90,7 @@ class MainActivityCompose : AppCompatActivity() {
 
 @Composable
 fun ForecastWeather5days(viewModel: WeatherViewModel) {
-    val forecast by viewModel?.forecast!!.observeAsState(initial = ForecastWeather(listOf()))
+    val forecast by viewModel.forecast.observeAsState(initial = ForecastWeather(listOf()))
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.Bottom
@@ -123,8 +123,8 @@ fun WeatherListItem(dailyForecast: DailyForecast) {
             ) {
                 Text(
                     fontSize = 20.sp,
-                    text = dailyForecast.date
-                )//dailyForecast.date.dateFormater())
+                    text = dailyForecast.date.dateFormater()
+                )
                 val minTemp =
                     "${dailyForecast.temperature.minimum.value}${dailyForecast.temperature.minimum.unit}".faranheidToCelsius()
                 val maxTemp =
