@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,6 +26,7 @@ import com.lms.weatherapp.WeatherApplication
 import com.lms.weatherapp.common.utils.dateFormater
 import com.lms.weatherapp.common.utils.faranheidToCelsius
 import com.lms.weatherapp.common.utils.getDrawableWeather
+import com.lms.weatherapp.common.utils.getHour
 import com.lms.weatherapp.ui.theme.WeatherComposeTheme
 import com.lms.weatherapp.weather.model.*
 import com.lms.weatherapp.weather.viewmodel.WeatherViewModel
@@ -196,55 +198,65 @@ fun LocationName(viewModel: WeatherViewModel) {
 
 @ExperimentalMaterialApi
 @Composable
-fun HourlyModalDrawer(viewModel: WeatherViewModel){
+fun HourlyModalDrawer(viewModel: WeatherViewModel) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-        ModalDrawer(
-            drawerContent = {
-                    Column(Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.Top) {
-                        Column(horizontalAlignment = Alignment.End){
-                            Surface(onClick = {
-                                scope.launch {
-                                    drawerState.close()
-                                }
-                            }) {
-                                Image(
-                                    ImageVector.vectorResource(id = R.drawable.ic_cancel),
-                                    contentDescription = "",
-                                    Modifier.size(20.dp),
-                                )
-                            }
-                        }
-                        ForecastHourly12hours(viewModel = viewModel)
-                    }
-            },
-            drawerState = drawerState,
-            content = {
+    ModalDrawer(
+        drawerContent = {
+            Column(
+                Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.Top
+            ) {
                 Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Top
-                ) {
-                    Button(onClick = {
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),horizontalAlignment = Alignment.End) {
+                    Surface(onClick = {
                         scope.launch {
-                            drawerState.open()
+                            drawerState.close()
                         }
-                    }){
-                        Text("Hourly")
+                    }) {
+                        Image(
+                            ImageVector.vectorResource(id = R.drawable.ic_cancel),
+                            contentDescription = "",
+                            Modifier.size(20.dp),
+                        )
                     }
-                    LocationName(viewModel = viewModel)
-                    CurrentWeatherView(viewModel = viewModel)
-                    ForecastWeather5days(viewModel = viewModel)
                 }
+                ForecastHourly12hours(viewModel = viewModel)
             }
-        )
+        },
+        drawerState = drawerState,
+        content = {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.End
+            ) {
+                Surface(onClick = {
+                    scope.launch {
+                        drawerState.open()
+                    }
+                }, Modifier.padding(8.dp)) {
+                    Image(
+                        ImageVector.vectorResource(id = R.drawable.ic_hourly),
+                        contentDescription = "",
+                        Modifier.size(24.dp)
+                    )
+                }
+                LocationName(viewModel = viewModel)
+                CurrentWeatherView(viewModel = viewModel)
+                ForecastWeather5days(viewModel = viewModel)
+            }
+        }
+    )
 }
 
 @Composable
-fun ForecastHourly12hours(viewModel: WeatherViewModel){
+fun ForecastHourly12hours(viewModel: WeatherViewModel) {
     viewModel.getHourly12Hours()
-    val hourly : List<HourlyWeather> by viewModel.hourly12hours.observeAsState(listOf())
+    val hourly: List<HourlyWeather> by viewModel.hourly12hours.observeAsState(listOf())
     LazyColumn(contentPadding = PaddingValues(horizontal = 8.dp, vertical = 10.dp)) {
         items(
             items = hourly,
@@ -256,17 +268,29 @@ fun ForecastHourly12hours(viewModel: WeatherViewModel){
 }
 
 @Composable
-fun HourlyListItem(hourlyWeather : HourlyWeather){
-    Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween) {
-        Text(text = hourlyWeather.dateTime.dateFormater())
-        val temperature = "${hourlyWeather.temperature.value}${hourlyWeather.temperature.unit}"
-        Text(text = temperature.faranheidToCelsius())
-        Image(
-            ImageVector.vectorResource(id = getDrawableWeather(hourlyWeather.weatherIcon)),
-            contentDescription = "",
-            Modifier.size(20.dp)
-        )
+fun HourlyListItem(hourlyWeather: HourlyWeather) {
+    Card(modifier = Modifier
+        .padding(horizontal = 8.dp, vertical = 8.dp)
+        .fillMaxWidth(),
+    elevation = 2.dp,
+    backgroundColor = colorResource(id = R.color.colorPrimary),
+    shape = RoundedCornerShape(corner = CornerSize(8.dp)))
+    {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(8.dp), Arrangement.SpaceBetween) {
+            Text(text = hourlyWeather.dateTime.getHour())
+            val temperature = "${hourlyWeather.temperature.value}${hourlyWeather.temperature.unit}"
+            Text(text = temperature.faranheidToCelsius())
+            Image(
+                ImageVector.vectorResource(id = getDrawableWeather(hourlyWeather.weatherIcon)),
+                contentDescription = "",
+                Modifier.size(20.dp)
+            )
+        }
     }
+
 }
 
 /*@Preview
