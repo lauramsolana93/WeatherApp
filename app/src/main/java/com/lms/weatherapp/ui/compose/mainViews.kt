@@ -1,8 +1,5 @@
 package com.lms.weatherapp.ui.compose
 
-import android.os.Bundle
-import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,78 +14,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.lms.weatherapp.WeatherApplication
 import com.lms.weatherapp.common.utils.dateFormater
 import com.lms.weatherapp.common.utils.faranheidToCelsius
 import com.lms.weatherapp.common.utils.getDrawableWeather
 import com.lms.weatherapp.common.utils.getHour
-import com.lms.weatherapp.ui.theme.WeatherComposeTheme
-import com.lms.weatherapp.weather.model.*
+import com.lms.weatherapp.weather.model.CurrentWeather
+import com.lms.weatherapp.weather.model.DailyForecast
+import com.lms.weatherapp.weather.model.ForecastWeather
+import com.lms.weatherapp.weather.model.HourlyWeather
 import com.lms.weatherapp.weather.viewmodel.WeatherViewModel
-import com.lms.weatherapp.weather.viewmodel.WeatherViewModelFactory
 import com.lms.wheatherapp.R
 import kotlinx.coroutines.launch
-
-class MainActivityCompose : AppCompatActivity() {
-
-    private lateinit var viewModel: WeatherViewModel
-
-    val repository by lazy {
-        (application as WeatherApplication).weatherRepository
-    }
-    val factory by lazy {
-        (application as WeatherApplication).weatherFactory
-    }
-
-    @ExperimentalMaterialApi
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel =
-            ViewModelProvider(this, WeatherViewModelFactory(repository = repository, factory)).get(
-                WeatherViewModel::class.java
-            )
-        setContent {
-            WeatherComposeTheme {
-                Surface {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Top
-                    ) {
-                        HourlyModalDrawer(viewModel = viewModel)
-                    }
-                }
-            }
-        }
-
-        initRepos()
-    }
-
-    private fun initRepos() {
-
-        viewModel.getCurrentWeatherByLocationKey()
-        viewModel.get5DaysForecastByLocationKey()
-        viewModel.locationName()
-
-
-        viewModel.getError().observe(this, {
-            MaterialAlertDialogBuilder(this)
-                .setTitle(getString(R.string.weather_not_found))
-                .setMessage(getString(R.string.weather_try_again))
-                .setPositiveButton(getString(R.string.accept_permission)) { _, _ ->
-                    viewModel.getCurrentWeatherByLocationKey()
-                }
-                .setOnDismissListener { viewModel.getCurrentWeatherByLocationKey() }
-                .show()
-        })
-
-
-    }
-}
 
 @Composable
 fun ForecastWeather5days(viewModel: WeatherViewModel) {
@@ -272,9 +212,10 @@ fun HourlyListItem(hourlyWeather: HourlyWeather) {
     Card(modifier = Modifier
         .padding(horizontal = 8.dp, vertical = 8.dp)
         .fillMaxWidth(),
-    elevation = 2.dp,
-    backgroundColor = colorResource(id = R.color.colorPrimary),
-    shape = RoundedCornerShape(corner = CornerSize(8.dp)))
+        elevation = 2.dp,
+        backgroundColor = colorResource(id = R.color.colorPrimary),
+        shape = RoundedCornerShape(corner = CornerSize(8.dp))
+    )
     {
         Row(
             Modifier
@@ -292,38 +233,3 @@ fun HourlyListItem(hourlyWeather: HourlyWeather) {
     }
 
 }
-
-/*@Preview
-@Composable
-fun weatherForecast(){
-    val metric = Metric(100.0, "F", 1)
-    val temperature = TemperatureForecast(metric, metric)
-    val day = Day(1, "", false)
-    val night = Night(1, "", false)
-    val dailyForecast = DailyForecast(
-        "23/08/2021",
-        0L,
-        temperature = temperature,
-        day,
-        night,
-        listOf(),
-        "",
-        ""
-    )
-    val currentWeather = CurrentWeather("", "20ºC", 1, "Soleado")
-
-    WeatherComposeTheme {
-        Surface{
-            Column(modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Top) {
-                LocationName("Sabadell")
-                CurrentWeatherView(currentWeather)
-                WeatherListItem(dailyForecast = dailyForecast)
-            }
-
-
-        }
-
-
-    }
-}*/

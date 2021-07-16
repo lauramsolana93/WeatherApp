@@ -1,20 +1,11 @@
-package com.lms.weatherapp.ui.compose
+package com.lms.weatherapp.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -22,6 +13,7 @@ import com.lms.weatherapp.WeatherApplication
 import com.lms.weatherapp.location.viewmodel.LocationViewModel
 import com.lms.weatherapp.location.viewmodel.LocationViewModelFactory
 import com.lms.weatherapp.ui.commons.BaseActivity
+import com.lms.weatherapp.ui.compose.Logo
 import com.lms.weatherapp.ui.theme.WeatherComposeTheme
 import com.lms.wheatherapp.R
 
@@ -75,38 +67,5 @@ class SplashActivityCompose : BaseActivity() {
             Log.e("SPLASH", "HELLO: $location")
             viewModel.initLocation(location ?: "")
         }
-    }
-}
-
-@Composable
-fun Logo(){
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Box(Modifier.size(100.dp)){
-            /*val animationSpec = remember { LottieAnimationSpec.RawRes(R.raw.weather_animation) }
-            LottieAnimation(
-                animationSpec,
-                modifier = Modifier.size(100.dp)
-            )*/
-            Image(
-                ImageVector.vectorResource(
-                    id = R.drawable.ic_cloudy
-                ),
-                "Logo",
-            )
-        }
-
-    }
-
-
-}
-@Preview
-@Composable
-fun LogoPreview(){
-    WeatherComposeTheme {
-        Logo()
     }
 }
