@@ -1,7 +1,7 @@
-package com.lms.weatherapp.model.weather
+package com.lms.weatherapp.common.network.model.weather
 
 import com.google.gson.annotations.SerializedName
-import com.lms.weatherapp.model.common.MetricImperialValues
+import com.lms.weatherapp.common.network.model.common.MetricImperialValues
 
 
 data class CurrentConditionsResponse(

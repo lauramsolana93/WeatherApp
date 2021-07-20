@@ -26,7 +26,7 @@ class LocationFactoryUnitTest {
     @Test
     fun buildWeather_shouldGetGeopositionFromRepo(){
         factory.buildLocation(mock(), location)
-        verify(repository).getLocationKey(any(), any())
+        verify(repository).getLocationKeyFromSharedPreferences(any(), any())
     }
 
     @Test
@@ -98,20 +98,20 @@ class LocationFactoryUnitTest {
         doAnswer {
             val callback: RepositoryCallback<Location?, String> = it.getArgument(0)
             callback.onSuccess(Location("301307", "Sabadell"))
-        }.whenever(repository).getLocationKey(any(), any())
+        }.whenever(repository).getLocationKeyFromSharedPreferences(any(), any())
     }
 
     private fun setUpRepositoryWithError(repository: LocationRepository){
         doAnswer {
             val callback: RepositoryCallback<Location?, String> = it.getArgument(0)
             callback.onError("Error")
-        }.whenever(repository).getLocationKey(any(), any())
+        }.whenever(repository).getLocationKeyFromSharedPreferences(any(), any())
     }
 
     private fun setUpRepositoryWithLoading(repository: LocationRepository){
         doAnswer {
             val callback: RepositoryCallback<Location?, String> = it.getArgument(0)
             callback.onLoading()
-        }.whenever(repository).getLocationKey(any(), any())
+        }.whenever(repository).getLocationKeyFromSharedPreferences(any(), any())
     }
 }

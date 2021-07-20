@@ -1,9 +1,11 @@
 package com.lms.weatherapp.weather.factory
 
+import com.lms.weatherapp.weather.model.CurrentWeather
+
 
 interface WeatherFactory {
 
-    fun getWeatherByLocation(callback: Callback)
+    suspend fun getWeatherByLocation(): CurrentWeather
     fun get5DaysForecast(callback: Callback)
     fun getCurrentLocationName() : String
     fun getHourly12Hours(callback: Callback)

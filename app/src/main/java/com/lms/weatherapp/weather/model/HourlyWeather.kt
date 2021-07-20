@@ -1,6 +1,6 @@
 package com.lms.weatherapp.weather.model
 
-import com.lms.weatherapp.model.weather.TemperatureHourly
+import com.lms.weatherapp.common.network.model.weather.TemperatureHourly
 
 data class HourlyWeather(
     val dateTime: String,

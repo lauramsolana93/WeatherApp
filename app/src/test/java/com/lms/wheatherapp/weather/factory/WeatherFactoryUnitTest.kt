@@ -1,6 +1,6 @@
 package com.lms.wheatherapp.weather.factory
 
-import com.lms.weatherapp.model.weather.TemperatureHourly
+import com.lms.weatherapp.common.network.model.weather.TemperatureHourly
 import com.lms.weatherapp.weather.repository.WeatherRepository
 import com.lms.weatherapp.network.RepositoryCallback
 import com.lms.weatherapp.weather.factory.WeatherFactory

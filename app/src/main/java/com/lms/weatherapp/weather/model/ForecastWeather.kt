@@ -1,7 +1,7 @@
 package com.lms.weatherapp.weather.model
 
 import com.google.gson.annotations.SerializedName
-import com.lms.weatherapp.model.common.Metric
+import com.lms.weatherapp.common.network.model.common.Metric
 
 data class ForecastWeather(
     val forecast: List<DailyForecast>

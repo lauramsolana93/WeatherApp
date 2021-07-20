@@ -81,6 +81,9 @@ dependencies {
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling:1.0.0-beta09"
 
+    //coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0"
+
     implementation("androidx.compose.runtime:runtime:1.0.0-rc01")
     implementation("androidx.compose.runtime:runtime-livedata:1.0.0-rc01")
     implementation("androidx.compose.runtime:runtime-rxjava2:1.0.0-rc01")

@@ -9,6 +9,7 @@ import com.lms.weatherapp.weather.factory.WeatherFactory
 import com.lms.weatherapp.weather.model.CurrentWeather
 import com.lms.weatherapp.weather.model.ForecastWeather
 import com.lms.weatherapp.weather.model.HourlyWeather
+import kotlinx.coroutines.*
 
 class WeatherViewModel(
     private val repository: WeatherRepository,
@@ -30,23 +31,17 @@ class WeatherViewModel(
     val locationName : LiveData<String> = _locationName
     val hourly12hours : LiveData<List<HourlyWeather>> = _hourly12hours
 
+    private val weatherJob = Job()
+
     fun getCurrentWeatherByLocationKey(){
-        factory.getWeatherByLocation(object : WeatherFactory.Callback{
-            override fun onSuccess(any: Any) {
-                loading.value = false
-                val weatherList = any as List<CurrentWeather>
-                _weather.value = weatherList[0]
-            }
-
-            override fun onLoading(isLoading: Boolean) {
-                loading.value = isLoading
-            }
-
-            override fun onError(e: String) {
-                loading.value = false
-                _error.value = e
-            }
-        })
+        val errorHandler: CoroutineExceptionHandler = CoroutineExceptionHandler{ _, exception ->
+            _error.value = exception.message
+        }
+        val coroutineScope = CoroutineScope(weatherJob + Dispatchers.Main)
+        coroutineScope.launch(errorHandler) {
+            val response = factory.getWeatherByLocation()
+            _weather.value = response
+        }
     }
 
     fun get5DaysForecastByLocationKey(){

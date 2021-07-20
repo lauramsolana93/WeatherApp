@@ -1,7 +1,7 @@
-package com.lms.weatherapp.model.weather
+package com.lms.weatherapp.common.network.model.weather
 
 import com.google.gson.annotations.SerializedName
-import com.lms.weatherapp.model.common.Metric
+import com.lms.weatherapp.common.network.model.common.Metric
 
 data class ForecastResponse(
     @SerializedName("Headline") val headline: Headline,

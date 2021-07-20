@@ -1,13 +1,9 @@
 package com.lms.weatherapp.location.repository
 
 import android.content.SharedPreferences
-import com.lms.weatherapp.model.location.GeopositionResponse
-import com.lms.weatherapp.network.RepositoryCallback
+import com.lms.weatherapp.common.network.model.location.GeopositionResponse
 import com.lms.weatherapp.network.WeatherApiService
-import com.lms.weatherapp.location.model.Location
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 const val CURRENT_KEY = "CURRENT_KEY"
 const val CURRENT_NAME = "CURRENT_NAME"
 class LocationRepositoryImpl(
@@ -15,40 +11,14 @@ class LocationRepositoryImpl(
     private val sharedPreferences: SharedPreferences
 ) : LocationRepository {
 
-    private var getLocationCall: Call<GeopositionResponse>? = null
 
-    override fun getLocationKey(
-        callback: RepositoryCallback<Location?, String>, location: String
-    ) {
-        getLocationCall?.cancel()
-        getLocationCall = api.getLocationKeyBygeoposition(location)
-        val wrapCallback =
-            object : Callback<GeopositionResponse> {
-                override fun onResponse(
-                    call: Call<GeopositionResponse>?,
-                    response: Response<GeopositionResponse>?
-                ) {
-                    if (response != null && response.isSuccessful) {
-                        val loc = response.body()
-                        if (loc != null) {
-                            saveLocationKey(loc.key)
-                            saveLocationName(loc.localizedName)
-                            callback.onSuccess(Location(loc.key, loc.localizedName))
-                            return
-                        }
-                    }
-                    callback.onError("Couldn't find location")
-                }
-
-                override fun onFailure(call: Call<GeopositionResponse>, t: Throwable) {
-                    callback.onError("Couldn't find location")
-                }
-            }
-        getLocationCall?.enqueue(wrapCallback)
+    override suspend fun getLocationKey(location: String): GeopositionResponse {
+        return api.getLocationKeyBygeoposition(location)
     }
 
+
     override fun saveLocationKey(locationKey: String){
-        val currentLocationKey = getLocationKey()
+        val currentLocationKey = getLocationKeyFromSharedPreferences()
         if(locationKey != currentLocationKey){
             val editor = sharedPreferences.edit()
             editor.putString(CURRENT_KEY, locationKey)
@@ -57,7 +27,7 @@ class LocationRepositoryImpl(
     }
 
     override fun saveLocationName(locationName: String) {
-        val currentLocationName = getLocationName()
+        val currentLocationName = getLocationNameFromSharedPreferences()
         if(locationName != currentLocationName){
             val editor = sharedPreferences.edit()
             editor.putString(CURRENT_NAME, locationName)
@@ -65,11 +35,11 @@ class LocationRepositoryImpl(
         }
     }
 
-    override fun getLocationKey(): String {
+    override fun getLocationKeyFromSharedPreferences(): String {
         return sharedPreferences.getString(CURRENT_KEY, "") ?: ""
     }
 
-    override fun getLocationName(): String {
+    override fun getLocationNameFromSharedPreferences(): String {
         return sharedPreferences.getString(CURRENT_NAME, "") ?: ""
     }
 

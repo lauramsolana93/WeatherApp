@@ -43,7 +43,7 @@ class LocationRepositoryUnitTest {
 
     @Test
     fun getLocationKey_shouldGetLocationFromSharedPreferences(){
-        repository.getLocationKey()
+        repository.getLocationKeyFromSharedPreferences()
         verify(sharedPreferences).getString(any(), any())
     }
 

@@ -1,9 +1,7 @@
-package com.lms.weatherapp.model.location
+package com.lms.weatherapp.common.network.model.location
 
 import com.google.gson.annotations.SerializedName
-import com.lms.weatherapp.model.common.MetricImperialValues
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.lms.weatherapp.common.network.model.common.MetricImperialValues
 
 
 data class GeopositionResponse(

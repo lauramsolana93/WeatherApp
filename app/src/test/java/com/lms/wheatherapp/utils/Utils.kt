@@ -1,6 +1,6 @@
 package com.lms.wheatherapp.utils
 
-import com.lms.weatherapp.model.common.Metric
+import com.lms.weatherapp.common.network.model.common.Metric
 import com.lms.weatherapp.weather.model.*
 
 val temperatureForecastMock = TemperatureForecast(

@@ -4,12 +4,12 @@ import android.content.SharedPreferences
 import com.lms.weatherapp.common.utils.mapToCurrentWeather
 import com.lms.weatherapp.common.utils.mapToForecastWeather
 import com.lms.weatherapp.common.utils.mapToHourlyWeather
-import com.lms.weatherapp.model.weather.CurrentConditionsResponse
+import com.lms.weatherapp.common.network.model.weather.CurrentConditionsResponse
 import com.lms.weatherapp.network.RepositoryCallback
 import com.lms.weatherapp.network.WeatherApiService
 import com.lms.weatherapp.weather.model.CurrentWeather
-import com.lms.weatherapp.model.weather.ForecastResponse
-import com.lms.weatherapp.model.weather.HourlyResponse
+import com.lms.weatherapp.common.network.model.weather.ForecastResponse
+import com.lms.weatherapp.common.network.model.weather.HourlyResponse
 import com.lms.weatherapp.weather.model.ForecastWeather
 import com.lms.weatherapp.weather.model.HourlyWeather
 import retrofit2.Call
@@ -28,36 +28,8 @@ class WeatherRepositoryImpl(
     private var get5DaysForecast: Call<ForecastResponse>? = null
     private var getHourly12hours: Call<List<HourlyResponse>>? = null
 
-    override fun getWeatherByLocationKey(
-        callback: RepositoryCallback<List<CurrentWeather>, String>
-    ) {
-        getCurrentWeather?.cancel()
-        getCurrentWeather = api.getCurrentConditionsByLocationKey(getLocationKey())
-        val wrapCallback =
-            object : Callback<List<CurrentConditionsResponse>> {
-                override fun onResponse(
-                    call: Call<List<CurrentConditionsResponse>>?,
-                    response: Response<List<CurrentConditionsResponse>>?
-                ) {
-                    if (response != null && response.isSuccessful) {
-                        val weatherListResponse = response.body()
-                        val currentWeatherList = ArrayList<CurrentWeather>()
-                        if (weatherListResponse != null) {
-                            weatherListResponse.forEach {
-                                currentWeatherList.add(it.mapToCurrentWeather())
-                            }
-                            callback.onSuccess(currentWeatherList.toList())
-                            return
-                        }
-                    }
-                    callback.onError("Couldn't find location")
-                }
-
-                override fun onFailure(call: Call<List<CurrentConditionsResponse>>, t: Throwable) {
-                    callback.onError("Couldn't find location"  + "$t")
-                }
-            }
-        getCurrentWeather?.enqueue(wrapCallback)
+    override suspend fun getWeatherByLocationKey(): List<CurrentConditionsResponse> {
+        return api.getCurrentConditionsByLocationKey(getLocationKey())
     }
 
     override fun getLocationKey(): String {

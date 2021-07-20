@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.lms.weatherapp.location.repository.LocationRepository
 import com.lms.weatherapp.location.factory.LocationFactory
 import com.lms.weatherapp.location.model.Location
+import kotlinx.coroutines.*
 
 class LocationViewModel(
     private val repository: LocationRepository,
@@ -20,20 +21,25 @@ class LocationViewModel(
     fun getError(): LiveData<String> = error
     fun getLocation(): LiveData<Location> = location
 
+    private val locationJob : CompletableJob = Job()
+
     fun initLocation(loc: String){
-        factory.buildLocation(object : LocationFactory.Callback {
-            override fun onSuccess(any: Any) {
-               location.value = any as Location
-            }
+        val errorHandler: CoroutineExceptionHandler = CoroutineExceptionHandler{ _, exception ->
+            error.value = exception.message
+        }
 
-            override fun onError(e: String) {
-                error.value = e
-            }
+        val coroutineScope : CoroutineScope = CoroutineScope(locationJob + Dispatchers.Main)
+        coroutineScope.launch(errorHandler) {
+            val response = factory.buildLocation(loc)
+            location.value = response
+            loading.value = false
+        }
+    }
 
-            override fun onLoading(isLoading: Boolean) {
-                loading.value = isLoading
-            }
-        }, loc)
+
+    override fun onCleared() {
+        super.onCleared()
+        locationJob.cancel()
     }
 
 

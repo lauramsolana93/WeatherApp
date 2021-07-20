@@ -1,4 +1,4 @@
-package com.lms.weatherapp.model.weather
+package com.lms.weatherapp.common.network.model.weather
 
 import com.google.gson.annotations.SerializedName
 

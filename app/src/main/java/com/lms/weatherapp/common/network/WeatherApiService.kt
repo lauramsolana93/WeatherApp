@@ -1,9 +1,9 @@
 package com.lms.weatherapp.network
 
-import com.lms.weatherapp.model.location.GeopositionResponse
-import com.lms.weatherapp.model.weather.CurrentConditionsResponse
-import com.lms.weatherapp.model.weather.ForecastResponse
-import com.lms.weatherapp.model.weather.HourlyResponse
+import com.lms.weatherapp.common.network.model.location.GeopositionResponse
+import com.lms.weatherapp.common.network.model.weather.CurrentConditionsResponse
+import com.lms.weatherapp.common.network.model.weather.ForecastResponse
+import com.lms.weatherapp.common.network.model.weather.HourlyResponse
 import com.lms.wheatherapp.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -19,16 +19,16 @@ import retrofit2.http.Query
 interface WeatherApiService {
 
     @GET("locations/v1/cities/geoposition/search")
-    fun getLocationKeyBygeoposition(
+    suspend fun getLocationKeyBygeoposition(
         @Query("q") q: String,
         @Query("language") language: String = "es-ES"
-    ): Call<GeopositionResponse>
+    ): GeopositionResponse
 
     @GET("currentconditions/v1/{locationKey}")
-    fun getCurrentConditionsByLocationKey(
+    suspend fun getCurrentConditionsByLocationKey(
         @Path("locationKey") locationKey : String,
         @Query("language") language: String = "es-ES"
-    ): Call<List<CurrentConditionsResponse>>
+    ): List<CurrentConditionsResponse>
 
     @GET("forecasts/v1/daily/5day/{locationKey}")
     fun get5DaysForecast(

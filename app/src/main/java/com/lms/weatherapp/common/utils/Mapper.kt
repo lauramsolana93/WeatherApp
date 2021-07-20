@@ -1,6 +1,6 @@
 package com.lms.weatherapp.common.utils
 
-import com.lms.weatherapp.model.weather.*
+import com.lms.weatherapp.common.network.model.weather.*
 import com.lms.weatherapp.weather.model.*
 
 fun CurrentConditionsResponse.mapToCurrentWeather(): CurrentWeather {
