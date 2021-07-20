@@ -31,16 +31,16 @@ interface WeatherApiService {
     ): List<CurrentConditionsResponse>
 
     @GET("forecasts/v1/daily/5day/{locationKey}")
-    fun get5DaysForecast(
+    suspend fun get5DaysForecast(
         @Path("locationKey") locationKey : String,
         @Query("language") language: String = "es-ES"
-    ): Call<ForecastResponse>
+    ): ForecastResponse
 
     @GET("forecasts/v1/hourly/12hour/{locationKey}")
-    fun getHourly12hours(
+    suspend fun getHourly12hours(
         @Path("locationKey") locationKey: String,
         @Query("language") language: String = "es-ES"
-    ): Call<List<HourlyResponse>>
+    ): List<HourlyResponse>
 
 
     companion object Factory {

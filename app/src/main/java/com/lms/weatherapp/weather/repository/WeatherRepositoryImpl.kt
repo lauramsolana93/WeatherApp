@@ -40,60 +40,12 @@ class WeatherRepositoryImpl(
         return sharedPreferences.getString(CURRENT_NAME, "") ?: ""
     }
 
-    override fun get5DaysForecast(callback: RepositoryCallback<ForecastWeather, String>) {
-        get5DaysForecast?.cancel()
-        get5DaysForecast = api.get5DaysForecast(getLocationKey())
-        val wrapCallback =
-            object : Callback<ForecastResponse> {
-                override fun onResponse(
-                    call: Call<ForecastResponse>,
-                    response: Response<ForecastResponse>
-                ) {
-                    if (response != null && response.isSuccessful) {
-                        val forecastResponse = response.body()
-                        if (forecastResponse != null) {
-                            callback.onSuccess(forecastResponse.mapToForecastWeather())
-                            return
-                        }
-                    }
-                    callback.onError("Couldn't find forecast")
-                }
-
-                override fun onFailure(call: Call<ForecastResponse>, t: Throwable) {
-                    callback.onError("Couldn't fin forecast")
-                }
-            }
-        get5DaysForecast?.enqueue(wrapCallback)
+    override suspend fun get5DaysForecast(): ForecastResponse {
+        return api.get5DaysForecast(getLocationKey())
     }
 
-    override fun getHourly12Hours(callback: RepositoryCallback<List<HourlyWeather>, String>) {
-        getHourly12hours?.cancel()
-        getHourly12hours = api.getHourly12hours(getLocationKey())
-        val wrapCallback =
-            object : Callback<List<HourlyResponse>>{
-                override fun onResponse(
-                    call: Call<List<HourlyResponse>>,
-                    response: Response<List<HourlyResponse>>
-                ) {
-                    if(response != null && response.isSuccessful){
-                        val hourlyResponseList = response.body()
-                        val hourlyList = ArrayList<HourlyWeather>()
-                        if(hourlyResponseList != null){
-                            hourlyResponseList.forEach {
-                                hourlyList.add(it.mapToHourlyWeather())
-                            }
-                            callback.onSuccess(hourlyList)
-                            return
-                        }
-                    }
-                    callback.onError("Couldn't find hourly weather")
-                }
-
-                override fun onFailure(call: Call<List<HourlyResponse>>, t: Throwable) {
-                    callback.onError("Couldn't find hourly weather")
-                }
-            }
-        getHourly12hours?.enqueue(wrapCallback)
+    override suspend fun getHourly12Hours() : List<HourlyResponse> {
+        return api.getHourly12hours(getLocationKey())
     }
 
 }

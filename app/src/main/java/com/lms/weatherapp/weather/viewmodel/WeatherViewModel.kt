@@ -3,12 +3,11 @@ package com.lms.weatherapp.weather.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.lms.weatherapp.ui.model.Hourly
-import com.lms.weatherapp.weather.repository.WeatherRepository
 import com.lms.weatherapp.weather.factory.WeatherFactory
 import com.lms.weatherapp.weather.model.CurrentWeather
 import com.lms.weatherapp.weather.model.ForecastWeather
 import com.lms.weatherapp.weather.model.HourlyWeather
+import com.lms.weatherapp.weather.repository.WeatherRepository
 import kotlinx.coroutines.*
 
 class WeatherViewModel(
@@ -34,54 +33,42 @@ class WeatherViewModel(
     private val weatherJob = Job()
 
     fun getCurrentWeatherByLocationKey(){
-        val errorHandler: CoroutineExceptionHandler = CoroutineExceptionHandler{ _, exception ->
+        val errorHandler = CoroutineExceptionHandler{ _, exception ->
+            loading.value = false
             _error.value = exception.message
         }
         val coroutineScope = CoroutineScope(weatherJob + Dispatchers.Main)
         coroutineScope.launch(errorHandler) {
             val response = factory.getWeatherByLocation()
+            loading.value = false
             _weather.value = response
         }
     }
 
     fun get5DaysForecastByLocationKey(){
-        factory.get5DaysForecast(object : WeatherFactory.Callback {
-            override fun onSuccess(any: Any) {
-                locationName()
-                loading.value = false
-                _forecast.value = any as ForecastWeather
-            }
-
-            override fun onLoading(isLoading: Boolean) {
-                loading.value = isLoading
-            }
-
-            override fun onError(e: String) {
-                loading.value = false
-                _error.value = e
-            }
-        })
+        val errorHandler = CoroutineExceptionHandler{ _, exception ->
+            loading.value = false
+            _error.value = exception.message
+        }
+        val coroutineScope = CoroutineScope(weatherJob + Dispatchers.Main)
+        coroutineScope.launch(errorHandler) {
+            val response = factory.get5DaysForecast()
+            loading.value = false
+            _forecast.value = response
+        }
     }
 
     fun getHourly12Hours(){
-        factory.getHourly12Hours(object : WeatherFactory.Callback {
-            override fun onSuccess(any: Any) {
-                loading.value = false
-                val hourlyWeatherList = any as List<HourlyWeather>
-                _hourly12hours.value = hourlyWeatherList
-
-            }
-
-            override fun onError(e: String) {
-                loading.value = false
-                _error.value = e
-            }
-
-            override fun onLoading(isLoading: Boolean) {
-                loading.value = true
-            }
+        val errorHandler = CoroutineExceptionHandler{ _, exception ->
+            loading.value = false
+            _error.value = exception.message
         }
-        )
+        val coroutineScope = CoroutineScope(weatherJob + Dispatchers.Main)
+        coroutineScope.launch(errorHandler) {
+            val response = factory.getHourly12Hours()
+            loading.value = false
+            _hourly12hours.value = response
+        }
     }
 
     fun locationName(){
