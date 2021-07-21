@@ -3,10 +3,13 @@ package com.lms.weatherapp.location.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.lms.weatherapp.location.repository.LocationRepository
 import com.lms.weatherapp.location.factory.LocationFactory
 import com.lms.weatherapp.location.model.Location
 import kotlinx.coroutines.*
+
+@ExperimentalCoroutinesApi
 
 class LocationViewModel(
     private val repository: LocationRepository,
@@ -24,12 +27,11 @@ class LocationViewModel(
     private val locationJob : CompletableJob = Job()
 
     fun initLocation(loc: String){
-        val errorHandler: CoroutineExceptionHandler = CoroutineExceptionHandler{ _, exception ->
+        val errorHandler = CoroutineExceptionHandler{ _, exception ->
             error.value = exception.message
         }
 
-        val coroutineScope : CoroutineScope = CoroutineScope(locationJob + Dispatchers.Main)
-        coroutineScope.launch(errorHandler) {
+        viewModelScope.launch(errorHandler) {
             val response = factory.buildLocation(loc)
             location.value = response
             loading.value = false

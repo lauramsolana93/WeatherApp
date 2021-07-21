@@ -7,8 +7,11 @@ import com.lms.weatherapp.weather.repository.WeatherRepository
 import com.lms.weatherapp.weather.factory.WeatherFactory
 import com.lms.weatherapp.weather.model.CurrentWeather
 import com.lms.weatherapp.weather.model.ForecastWeather
+import com.lms.weatherapp.weather.model.HourlyWeather
 import com.lms.weatherapp.weather.viewmodel.WeatherViewModel
+import com.lms.wheatherapp.TestCoroutineRule
 import com.nhaarman.mockitokotlin2.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -18,14 +21,13 @@ class WeatherViewModelTest {
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
 
+    @ExperimentalCoroutinesApi
+    @get:Rule
+    val testCoroutineRule = TestCoroutineRule()
+
     private lateinit var repository: WeatherRepository
     private lateinit var factory: WeatherFactory
     private lateinit var viewModel : WeatherViewModel
-    private lateinit var loadingObserver: Observer<Boolean>
-    private lateinit var errorObserver: Observer<String>
-    private lateinit var currentWeatherObserver: Observer<CurrentWeather>
-    private lateinit var locationNameObserver : Observer<String>
-    private lateinit var forecastObserver: Observer<ForecastWeather>
     private lateinit var currentWeather: CurrentWeather
     private lateinit var forecastWeather: ForecastWeather
 
@@ -35,82 +37,50 @@ class WeatherViewModelTest {
         factory = mock()
         viewModel = WeatherViewModel(repository, factory)
 
-        loadingObserver = mock()
-        errorObserver = mock()
-        currentWeatherObserver = mock()
-        locationNameObserver = mock()
-        forecastObserver = mock()
-
-        viewModel.getLoading().observeForever(loadingObserver)
-        viewModel.currentWeather.observeForever(currentWeatherObserver)
-        viewModel.getError().observeForever(errorObserver)
-        viewModel.locationName.observeForever(locationNameObserver)
-        viewModel.getForecastWeather().observeForever(forecastObserver)
-
         currentWeather = mock()
         forecastWeather = mock()
 
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun getCurrentWeather_shouldGetCurrentLocation(){
-        viewModel.getCurrentWeatherByLocationKey()
-        verify(factory).getWeatherByLocation(any())
+        testCoroutineRule.runBlockingTest {
+            doReturn(currentWeather)
+                .`when`(factory)
+                .getWeatherByLocation()
+            viewModel.getCurrentWeatherByLocationKey()
+            verify(factory).getWeatherByLocation()
+        }
+
+
+
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun get5DaysForecast_shouldGetForecast(){
-        viewModel.get5DaysForecastByLocationKey()
-        verify(factory).get5DaysForecast(any())
+        testCoroutineRule.runBlockingTest {
+            doReturn(forecastWeather)
+                .`when`(factory)
+                .get5DaysForecast()
+            viewModel.get5DaysForecastByLocationKey()
+            verify(factory).get5DaysForecast()
+        }
+
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun getHourly12Hours_shouldGetHourly(){
-        viewModel.getHourly12Hours()
-        verify(factory).getHourly12Hours(any())
-    }
+        testCoroutineRule.runBlockingTest {
+            doReturn(listOf<HourlyWeather>())
+                .`when`(factory)
+                .getHourly12Hours()
+            viewModel.getHourly12Hours()
+            verify(factory).getHourly12Hours()
+        }
 
-    @Test
-    fun getCurrentWeather_shouldHideLoading_whenFactoryReturnsError(){
-        setUpFactoryWithErrorCurrentWeather()
-        viewModel.getCurrentWeatherByLocationKey()
-        verify(loadingObserver).onChanged(eq(false))
-    }
-
-    @Test
-    fun get5DaysForecast_shouldHideLoading_whenFactoryReturnsError(){
-        setUpFactoryWithErrorForecastWeather()
-        viewModel.get5DaysForecastByLocationKey()
-        verify(loadingObserver).onChanged(eq(false))
-    }
-
-    @Test
-    fun getHourly12Hours_shouldHideLoading_whenHourlyReturnsError(){
-        setUpFactoryWithErrorHourlyWeather()
-        viewModel.getHourly12Hours()
-        verify(loadingObserver).onChanged(eq(false))
-    }
-
-
-    private fun setUpFactoryWithErrorCurrentWeather(){
-        doAnswer {
-            val callback: WeatherFactory.Callback = it.getArgument(0)
-            callback.onError("Error")
-        }.whenever(factory).getWeatherByLocation(any())
-    }
-
-    private fun setUpFactoryWithErrorForecastWeather(){
-        doAnswer {
-            val callback: WeatherFactory.Callback = it.getArgument(0)
-            callback.onError("Error")
-        }.whenever(factory).get5DaysForecast(any())
-    }
-
-    private fun setUpFactoryWithErrorHourlyWeather(){
-        doAnswer {
-            val callback : WeatherFactory.Callback = it.getArgument(0)
-            callback.onError("Error")
-        }.whenever(factory).getHourly12Hours(any())
     }
 
 }
