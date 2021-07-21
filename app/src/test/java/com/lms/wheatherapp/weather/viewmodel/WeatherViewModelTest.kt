@@ -1,16 +1,16 @@
 package com.lms.wheatherapp.weather.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
-import com.lms.weatherapp.network.RepositoryCallback
-import com.lms.weatherapp.weather.repository.WeatherRepository
 import com.lms.weatherapp.weather.factory.WeatherFactory
 import com.lms.weatherapp.weather.model.CurrentWeather
 import com.lms.weatherapp.weather.model.ForecastWeather
 import com.lms.weatherapp.weather.model.HourlyWeather
+import com.lms.weatherapp.weather.repository.WeatherRepository
 import com.lms.weatherapp.weather.viewmodel.WeatherViewModel
 import com.lms.wheatherapp.TestCoroutineRule
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Rule
