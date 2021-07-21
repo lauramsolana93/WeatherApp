@@ -45,15 +45,13 @@ class WeatherFactoryUnitTest {
         HourlyResponse("", 0L, 1, "", false, false, TemperatureHourly(20, "", 1), 1, "", "")
     )
 
-    private lateinit var currentWeather: CurrentWeather
-    private lateinit var forecastWeather: ForecastWeather
+
 
     @Before
     fun setup(){
         repository = mock()
         factory = WeatherFactoryImpl(repository)
-        currentWeather = mock()
-        forecastWeather = mock()
+
     }
 
     @ExperimentalCoroutinesApi
