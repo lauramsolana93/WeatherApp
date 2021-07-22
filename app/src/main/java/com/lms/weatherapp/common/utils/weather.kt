@@ -127,7 +127,7 @@ fun String.dateFormater(): String {
 fun String.getHour():String {
     var format = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ")
     val newHour = format.parse(this)
-    format = SimpleDateFormat("hh:mm")
+    format = SimpleDateFormat("HH:mm")
     val hour = format.format(newHour)
     return hour.toString()
 }

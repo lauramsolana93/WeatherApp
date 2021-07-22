@@ -16,15 +16,12 @@ class LocationViewModel(
     private val factory: LocationFactory
 ): ViewModel() {
 
-    private val loading = MutableLiveData<Boolean>()
     private val error = MutableLiveData<String>()
     private val location = MutableLiveData<Location>()
 
-    fun getLoading(): LiveData<Boolean> = loading
     fun getError(): LiveData<String> = error
     fun getLocation(): LiveData<Location> = location
 
-    private val locationJob : CompletableJob = Job()
 
     fun initLocation(loc: String){
         val errorHandler = CoroutineExceptionHandler{ _, exception ->
@@ -34,14 +31,13 @@ class LocationViewModel(
         viewModelScope.launch(errorHandler) {
             val response = factory.buildLocation(loc)
             location.value = response
-            loading.value = false
         }
     }
 
 
     override fun onCleared() {
         super.onCleared()
-        locationJob.cancel()
+        viewModelScope.cancel()
     }
 
 
