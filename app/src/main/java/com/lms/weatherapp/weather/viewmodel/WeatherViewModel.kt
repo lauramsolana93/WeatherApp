@@ -25,7 +25,6 @@ class WeatherViewModel(
     fun getLoading() : LiveData<Boolean> = loading
     val error : LiveData<String> = _error
     val currentWeather : LiveData<CurrentWeather> = _weather
-    fun getForecastWeather(): LiveData<ForecastWeather> = _forecast
     val forecast: LiveData<ForecastWeather> = _forecast
     val locationName : LiveData<String> = _locationName
     val hourly12hours : LiveData<List<HourlyWeather>> = _hourly12hours
