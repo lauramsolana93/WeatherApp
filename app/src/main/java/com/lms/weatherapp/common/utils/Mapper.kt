@@ -1,7 +1,16 @@
 package com.lms.weatherapp.common.utils
 
+import com.lms.weatherapp.common.network.model.location.GeopositionResponse
 import com.lms.weatherapp.common.network.model.weather.*
+import com.lms.weatherapp.location.model.Location
 import com.lms.weatherapp.weather.model.*
+
+fun GeopositionResponse.mapToLocation(): Location {
+    return Location(
+        key = this.key,
+        name = this.localizedName
+    )
+}
 
 fun CurrentConditionsResponse.mapToCurrentWeather(): CurrentWeather {
     return CurrentWeather(

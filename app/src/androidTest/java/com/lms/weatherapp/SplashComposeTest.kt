@@ -4,8 +4,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import com.lms.weatherapp.ui.activities.SplashActivityCompose
 import com.lms.weatherapp.ui.compose.Logo
-import com.lms.weatherapp.ui.compose.SplashActivityCompose
 import com.lms.weatherapp.ui.theme.WeatherComposeTheme
 import org.junit.Rule
 import org.junit.Test

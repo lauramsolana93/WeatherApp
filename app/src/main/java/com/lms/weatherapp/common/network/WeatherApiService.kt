@@ -9,6 +9,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -22,7 +23,7 @@ interface WeatherApiService {
     suspend fun getLocationKeyBygeoposition(
         @Query("q") q: String,
         @Query("language") language: String = "es-ES"
-    ): GeopositionResponse
+    ): Response<GeopositionResponse>
 
     @GET("currentconditions/v1/{locationKey}")
     suspend fun getCurrentConditionsByLocationKey(

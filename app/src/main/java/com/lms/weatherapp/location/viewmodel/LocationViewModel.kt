@@ -1,36 +1,35 @@
 package com.lms.weatherapp.location.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.lms.weatherapp.location.repository.LocationRepository
+import com.lms.weatherapp.common.network.model.location.GeopositionResponse
+import com.lms.weatherapp.common.utils.Resource
+import com.lms.weatherapp.common.utils.mapToLocation
 import com.lms.weatherapp.location.factory.LocationFactory
 import com.lms.weatherapp.location.model.Location
-import kotlinx.coroutines.*
+import com.lms.weatherapp.location.repository.LocationRepository
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import retrofit2.Response
 
-@ExperimentalCoroutinesApi
 
 class LocationViewModel(
     private val repository: LocationRepository,
     private val factory: LocationFactory
 ): ViewModel() {
 
-    private val error = MutableLiveData<String>()
-    private val location = MutableLiveData<Location>()
-
-    fun getError(): LiveData<String> = error
-    fun getLocation(): LiveData<Location> = location
-
+    val location = MutableLiveData<Resource<Location>>()
 
     fun initLocation(loc: String){
-        val errorHandler = CoroutineExceptionHandler{ _, exception ->
-            error.value = exception.message
-        }
-
-        viewModelScope.launch(errorHandler) {
-            val response = factory.buildLocation(loc)
-            location.value = response
+        location.postValue(Resource.Loading())
+        viewModelScope.launch {
+            try {
+                val response = factory.buildLocation(loc)
+                location.postValue(handleResponse(response))
+            } catch (t: Throwable){
+                location.postValue(Resource.Error("Couldn't find the location"))
+            }
         }
     }
 
@@ -38,6 +37,16 @@ class LocationViewModel(
     override fun onCleared() {
         super.onCleared()
         viewModelScope.cancel()
+    }
+
+    private fun handleResponse(response: Response<GeopositionResponse>) : Resource<Location>{
+        if(response.isSuccessful){
+            response.body()?.let { resultResponse ->
+                val result = resultResponse.mapToLocation()
+                return Resource.Success(result)
+            }
+        }
+        return Resource.Error(response.message())
     }
 
 

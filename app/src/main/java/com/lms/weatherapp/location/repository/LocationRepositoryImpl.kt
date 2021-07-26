@@ -3,6 +3,7 @@ package com.lms.weatherapp.location.repository
 import android.content.SharedPreferences
 import com.lms.weatherapp.common.network.model.location.GeopositionResponse
 import com.lms.weatherapp.network.WeatherApiService
+import retrofit2.Response
 
 const val CURRENT_KEY = "CURRENT_KEY"
 const val CURRENT_NAME = "CURRENT_NAME"
@@ -12,7 +13,7 @@ class LocationRepositoryImpl(
 ) : LocationRepository {
 
 
-    override suspend fun getLocationKey(location: String): GeopositionResponse {
+    override suspend fun getLocationKey(location: String): Response<GeopositionResponse> {
         return api.getLocationKeyBygeoposition(location)
     }
 

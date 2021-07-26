@@ -7,15 +7,18 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.lms.weatherapp.WeatherApplication
+import com.lms.weatherapp.common.utils.Resource
 import com.lms.weatherapp.location.viewmodel.LocationViewModel
 import com.lms.weatherapp.location.viewmodel.LocationViewModelFactory
 import com.lms.weatherapp.ui.commons.BaseActivity
 import com.lms.weatherapp.ui.compose.Logo
 import com.lms.weatherapp.ui.theme.WeatherComposeTheme
 import com.lms.wheatherapp.R
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 class SplashActivityCompose : BaseActivity() {
 
@@ -41,21 +44,25 @@ class SplashActivityCompose : BaseActivity() {
             LocationViewModel::class.java
         )
 
-        viewModel.getLocation().observe(this, {
-            startActivity(Intent(this, MainActivityCompose::class.java))
-            finish()
-        })
-
-        viewModel.getError().observe(this, {
-            it.let {
-                MaterialAlertDialogBuilder(this)
-                    .setTitle(getString(R.string.location_not_found))
-                    .setMessage(getString(R.string.location_try_again))
-                    .setPositiveButton(getString(R.string.accept_permission)){ _, _ ->
-                        checkLocationPermission()
-                    }
-                    .setOnDismissListener { checkLocationPermission() }
-                    .show()
+        viewModel.location.observe(this, Observer { result ->
+            when(result){
+                is Resource.Success -> {
+                    startActivity(Intent(this, MainActivityCompose::class.java))
+                    finish()
+                }
+                is Resource.Error -> {
+                    MaterialAlertDialogBuilder(this)
+                        .setTitle(getString(R.string.location_not_found))
+                        .setMessage(getString(R.string.location_try_again))
+                        .setPositiveButton(getString(R.string.accept_permission)){ _, _ ->
+                            checkLocationPermission()
+                        }
+                        .setOnDismissListener { checkLocationPermission() }
+                        .show()
+                }
+                is Resource.Loading -> {
+                    //show loading
+                }
             }
         })
 
