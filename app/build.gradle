@@ -79,11 +79,11 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.3.0-rc-01'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling:1.0.0-beta09"
+    implementation "androidx.compose.ui:ui-tooling:$compose_version"
 
-    implementation("androidx.compose.runtime:runtime:1.0.0-rc01")
-    implementation("androidx.compose.runtime:runtime-livedata:1.0.0-rc01")
-    implementation("androidx.compose.runtime:runtime-rxjava2:1.0.0-rc01")
+    implementation("androidx.compose.runtime:runtime:$compose_version")
+    implementation("androidx.compose.runtime:runtime-livedata:$compose_version")
+    implementation("androidx.compose.runtime:runtime-rxjava2:$compose_version")
 
     // Retrofit+network
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -99,11 +99,6 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:1.1.1"
     implementation "android.arch.lifecycle:viewmodel:1.1.1"
 
-    //lottie
-    implementation 'com.airbnb.android:lottie:3.7.1-SNAPSHOT'
-    implementation 'com.airbnb.android:lottie:3.7.1-SNAPSHOT'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'com.airbnb.android:lottie-compose:1.0.0-beta07-1'
 
     //mockito
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0'
