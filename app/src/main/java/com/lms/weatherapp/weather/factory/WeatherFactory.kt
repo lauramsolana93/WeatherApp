@@ -11,10 +11,4 @@ interface WeatherFactory {
     suspend fun get5DaysForecast(): ForecastWeather
     fun getCurrentLocationName() : String
     suspend fun getHourly12Hours(): List<HourlyWeather>
-
-    interface Callback {
-        fun onSuccess(any:Any)
-        fun onError(e: String)
-        fun onLoading(isLoading: Boolean)
-    }
 }
