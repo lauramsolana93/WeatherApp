@@ -15,6 +15,7 @@ import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
 class WeatherRepositoryUnitTest {
+
     private lateinit var repository: WeatherRepository
 
     @Mock
